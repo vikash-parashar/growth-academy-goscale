@@ -32,7 +32,7 @@ export default function WhyCustomDevelopmentPage() {
           <div className="mb-10">
             <h2 className="text-2xl font-semibold text-slate-900 dark:text-slate-50 sm:text-3xl">The Quick Answer</h2>
             <p className="mt-3 max-w-2xl text-slate-600 dark:text-slate-400">
-              These are different problems solving different needs. Neither is wrong — they're built for different outcomes.
+              These are different problems solving different needs. Neither is wrong &mdash; they&apos;re built for different outcomes.
             </p>
           </div>
 
@@ -107,7 +107,7 @@ export default function WhyCustomDevelopmentPage() {
         <section className="border-t border-slate-200/90 pb-16 pt-16 dark:border-white/10 sm:pb-24 sm:pt-20">
           <h2 className="text-2xl font-semibold text-slate-900 dark:text-slate-50 sm:text-3xl">Why Custom Development Takes 1-3 Years</h2>
           <p className="mt-3 max-w-2xl text-slate-600 dark:text-slate-400">
-            It's not that developers are slow. It's that you're solving fundamentally different problems.
+            It&apos;s not that developers are slow. It&apos;s that you&apos;re solving fundamentally different problems.
           </p>
 
           <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
@@ -140,7 +140,7 @@ export default function WhyCustomDevelopmentPage() {
               </div>
               <h3 className="font-semibold text-slate-900 dark:text-slate-50">Data architecture</h3>
               <p className="mt-2 text-sm leading-relaxed text-slate-600 dark:text-slate-400">
-                Designing databases for millions of records, queries that don't strangle under load, data integrity across transactions — this is design + testing.
+                Designing databases for millions of records, queries that don&apos;t strangle under load, data integrity across transactions &mdash; this is design + testing.
               </p>
             </div>
 
@@ -218,7 +218,7 @@ export default function WhyCustomDevelopmentPage() {
                   <strong className="text-slate-900 dark:text-slate-200">You own nothing:</strong> Your site lives on their servers. They change terms, you adapt or lose everything.
                 </li>
                 <li className="text-sm leading-relaxed text-slate-600 dark:text-slate-400">
-                  <strong className="text-slate-900 dark:text-slate-200">Can't scale beyond templates:</strong> Want a custom workflow? Unique business logic? Impossible.
+                  <strong className="text-slate-900 dark:text-slate-200">Can&apos;t scale beyond templates:</strong> Want a custom workflow? Unique business logic? Impossible.
                 </li>
                 <li className="text-sm leading-relaxed text-slate-600 dark:text-slate-400">
                   <strong className="text-slate-900 dark:text-slate-200">Locked into their ecosystem:</strong> Integrations are limited. Switching costs are high.
@@ -227,7 +227,7 @@ export default function WhyCustomDevelopmentPage() {
                   <strong className="text-slate-900 dark:text-slate-200">Not suitable for complex apps:</strong> EHR, fintech, machine learning platforms — impossible.
                 </li>
                 <li className="text-sm leading-relaxed text-slate-600 dark:text-slate-400">
-                  <strong className="text-slate-900 dark:text-slate-200">Performance is average:</strong> You can't optimize for your specific users.
+                  <strong className="text-slate-900 dark:text-slate-200">Performance is average:</strong> You can&apos;t optimize for your specific users.
                 </li>
               </ul>
             </div>
@@ -242,13 +242,13 @@ export default function WhyCustomDevelopmentPage() {
                   <strong className="text-slate-900 dark:text-slate-200">Total customization:</strong> Build exactly what your customers need, no compromises.
                 </li>
                 <li className="text-sm leading-relaxed text-slate-600 dark:text-slate-400">
-                  <strong className="text-slate-900 dark:text-slate-200">You own the code:</strong> It's yours. You can move it, modify it, sell it, or open-source it.
+                  <strong className="text-slate-900 dark:text-slate-200">You own the code:</strong> It&apos;s yours. You can move it, modify it, sell it, or open-source it.
                 </li>
                 <li className="text-sm leading-relaxed text-slate-600 dark:text-slate-400">
                   <strong className="text-slate-900 dark:text-slate-200">Scales to any size:</strong> Works with 10 users or 10 million. You control the limits.
                 </li>
                 <li className="text-sm leading-relaxed text-slate-600 dark:text-slate-400">
-                  <strong className="text-slate-900 dark:text-slate-200">Business advantage:</strong> Your EHR works better than competitors' because it's built for your users.
+                  <strong className="text-slate-900 dark:text-slate-200">Business advantage:</strong> Your EHR works better than competitors&apos; because it&apos;s built for your users.
                 </li>
                 <li className="text-sm leading-relaxed text-slate-600 dark:text-slate-400">
                   <strong className="text-slate-900 dark:text-slate-200">Defensible moat:</strong> Hard to copy, harder to compete against.
@@ -272,7 +272,7 @@ export default function WhyCustomDevelopmentPage() {
                   <strong className="text-slate-900 dark:text-slate-200">You own the ops:</strong> You manage servers, security, backups, uptime. Responsibility is yours.
                 </li>
                 <li className="text-sm leading-relaxed text-slate-600 dark:text-slate-400">
-                  <strong className="text-slate-900 dark:text-slate-200">Requires expert teams:</strong> Can't hire juniors and expect it to work. Need experienced engineers.
+                  <strong className="text-slate-900 dark:text-slate-200">Requires expert teams:</strong> Can&apos;t hire juniors and expect it to work. Need experienced engineers.
                 </li>
                 <li className="text-sm leading-relaxed text-slate-600 dark:text-slate-400">
                   <strong className="text-slate-900 dark:text-slate-200">Ongoing maintenance:</strong> Updates, security patches, database migrations — never ends.
@@ -292,7 +292,7 @@ export default function WhyCustomDevelopmentPage() {
               <h3 className="text-lg font-semibold text-slate-900 dark:text-slate-50">Use Pre-built Builders If:</h3>
               <ul className="mt-5 space-y-2 text-sm text-slate-600 dark:text-slate-400">
                 <li>✓ You need a portfolio or marketing site</li>
-                <li>✓ You're a freelancer or creative professional</li>
+                <li>✓ You&apos;re a freelancer or creative professional</li>
                 <li>✓ Your business is service-based (coaching, consulting)</li>
                 <li>✓ You have minimal technical requirements</li>
                 <li>✓ You want to bootstrap with nearly zero budget</li>
@@ -304,12 +304,12 @@ export default function WhyCustomDevelopmentPage() {
             <GlassCard className="border-blue-500/20 dark:border-blue-500/15">
               <h3 className="text-lg font-semibold text-slate-900 dark:text-slate-50">Use Custom Development If:</h3>
               <ul className="mt-5 space-y-2 text-sm text-slate-600 dark:text-slate-400">
-                <li>✓ You're building a SaaS product or platform</li>
+                <li>✓ You&apos;re building a SaaS product or platform</li>
                 <li>✓ You handle sensitive data (health, finance, personal)</li>
                 <li>✓ You need to scale to thousands or millions of users</li>
                 <li>✓ You have complex business logic or workflows</li>
                 <li>✓ You want to own your technology and data</li>
-                <li>✓ You're building a defensible competitive advantage</li>
+                <li>✓ You&apos;re building a defensible competitive advantage</li>
               </ul>
             </GlassCard>
           </div>
@@ -319,13 +319,13 @@ export default function WhyCustomDevelopmentPage() {
         <section className="border-t border-slate-200/90 pb-16 pt-16 dark:border-white/10 sm:pb-24 sm:pt-20">
           <h2 className="text-2xl font-semibold text-slate-900 dark:text-slate-50 sm:text-3xl">Why Learning Backend Development Matters</h2>
           <p className="mt-3 max-w-2xl text-slate-600 dark:text-slate-400">
-            If you're considering Gopher Lab, here's why custom development skills are career-changing:
+            If you&apos;re considering Gopher Lab, here&apos;s why custom development skills are career-changing:
           </p>
 
           <div className="mt-10 space-y-6">
             {/* Reason 1 */}
             <div className="rounded-lg border border-slate-200/50 bg-slate-50/30 p-6 dark:border-white/5 dark:bg-slate-900/20">
-              <h3 className="font-semibold text-slate-900 dark:text-slate-50">1. You're not a service provider — you're a builder</h3>
+              <h3 className="font-semibold text-slate-900 dark:text-slate-50">1. You&apos;re not a service provider &mdash; you&apos;re a builder</h3>
               <p className="mt-2 text-sm leading-relaxed text-slate-600 dark:text-slate-400">
                 Wix is for people who need websites. Backend development is for people who build products that scale to businesses worth ₹100Cr+. Your scope changes entirely.
               </p>
@@ -335,7 +335,7 @@ export default function WhyCustomDevelopmentPage() {
             <div className="rounded-lg border border-slate-200/50 bg-slate-50/30 p-6 dark:border-white/5 dark:bg-slate-900/20">
               <h3 className="font-semibold text-slate-900 dark:text-slate-50">2. Salary and career trajectory are different</h3>
               <p className="mt-2 text-sm leading-relaxed text-slate-600 dark:text-slate-400">
-                A Wix freelancer makes ₹2-5L/year. A backend engineer at a US company makes $100k-300k/year (₹83L - ₹2.5Cr). With equity, that's generational wealth.
+                A Wix freelancer makes ₹2-5L/year. A backend engineer at a US company makes $100k-300k/year (₹83L - ₹2.5Cr). With equity, that&apos;s generational wealth.
               </p>
             </div>
 
@@ -343,7 +343,7 @@ export default function WhyCustomDevelopmentPage() {
             <div className="rounded-lg border border-slate-200/50 bg-slate-50/30 p-6 dark:border-white/5 dark:bg-slate-900/20">
               <h3 className="font-semibold text-slate-900 dark:text-slate-50">3. You solve real problems that matter</h3>
               <p className="mt-2 text-sm leading-relaxed text-slate-600 dark:text-slate-400">
-                EHR platforms save lives. Fintech apps bring banking to the unbanked. Backend engineers aren't just building websites — they're building infrastructure that changes behavior and economies.
+                EHR platforms save lives. Fintech apps bring banking to the unbanked. Backend engineers aren&apos;t just building websites &mdash; they&apos;re building infrastructure that changes behavior and economies.
               </p>
             </div>
 
@@ -351,7 +351,7 @@ export default function WhyCustomDevelopmentPage() {
             <div className="rounded-lg border border-slate-200/50 bg-slate-50/30 p-6 dark:border-white/5 dark:bg-slate-900/20">
               <h3 className="font-semibold text-slate-900 dark:text-slate-50">4. Your code becomes your competitive advantage</h3>
               <p className="mt-2 text-sm leading-relaxed text-slate-600 dark:text-slate-400">
-                You can start an EHR company and compete against multi-crore incumbents because your architecture is cleaner, faster, cheaper to run. A Wix user can't do this — they're forever bound by templates.
+                You can start an EHR company and compete against multi-crore incumbents because your architecture is cleaner, faster, cheaper to run. A Wix user can&apos;t do this &mdash; they&apos;re forever bound by templates.
               </p>
             </div>
 
@@ -367,7 +367,7 @@ export default function WhyCustomDevelopmentPage() {
             <div className="rounded-lg border border-slate-200/50 bg-slate-50/30 p-6 dark:border-white/5 dark:bg-slate-900/20">
               <h3 className="font-semibold text-slate-900 dark:text-slate-50">6. Learning compounds differently</h3>
               <p className="mt-2 text-sm leading-relaxed text-slate-600 dark:text-slate-400">
-                Wix skills don't transfer. Backend skills? Go, Python, databases, APIs, systems design — these skills work everywhere. Every platform, every company, every problem. You're not locked in.
+                Wix skills don&apos;t transfer. Backend skills&quest; Go, Python, databases, APIs, systems design &mdash; these skills work everywhere. Every platform, every company, every problem. You&apos;re not locked in.
               </p>
             </div>
           </div>
@@ -486,7 +486,7 @@ export default function WhyCustomDevelopmentPage() {
               <div className="mt-6 border-t border-slate-200 pt-4 dark:border-white/10">
                 <div className="flex justify-between">
                   <span className="font-semibold text-slate-900 dark:text-slate-50">ROI (within 2 years)</span>
-                  <span className="font-bold text-lg text-emerald-600 dark:text-emerald-400">₹2Cr+</span>
+                  <span className="font-bold text-lg text-emerald-600 dark:text-emerald-400">&nbsp;₹2Cr+</span>
                 </div>
               </div>
               <p className="mt-4 text-xs text-slate-600 dark:text-slate-400">Salary stays yours forever. Compounds with every role.</p>
@@ -495,7 +495,7 @@ export default function WhyCustomDevelopmentPage() {
 
           <div className="mt-8 rounded-lg border border-blue-500/20 bg-blue-50/30 p-6 dark:border-blue-500/15 dark:bg-blue-900/10">
             <p className="text-sm leading-relaxed text-slate-700 dark:text-slate-300">
-              <strong className="text-slate-900 dark:text-slate-50">The compound difference:</strong> Wix is a one-time project. Backend skills are forever. A backend engineer earning ₹1.5Cr/year compounds to ₹3Cr over 10 years. Your Wix site is worth ₹0 in 10 years. Your code? Still running, still valuable.
+              <strong className="text-slate-900 dark:text-slate-50">The compound difference:</strong> Wix is a one-time project. Backend skills are forever. A backend engineer earning ₹1.5Cr/year compounds to ₹3Cr over 10 years. Your Wix site is worth ₹0 in 10 years. Your code&quest; Still running, still valuable.
             </p>
           </div>
         </section>
@@ -508,10 +508,10 @@ export default function WhyCustomDevelopmentPage() {
               Neither path is wrong. But they lead to different destinations.
             </p>
             <p className="mt-3 text-slate-600 dark:text-slate-400">
-              Use Wix if you need a website fast. But if you want to <strong>build products that scale</strong>, solve <strong>complex problems</strong>, and earn income that makes financial noise — you need custom development skills.
+              Use Wix if you need a website fast. But if you want to <strong>build products that scale</strong>, solve <strong>complex problems</strong>, and earn income that makes financial noise &mdash; you need custom development skills.
             </p>
             <p className="mt-3 text-slate-600 dark:text-slate-400">
-              That's why Gopher Lab exists. We teach you not how to build websites. We teach you how to think like a systems engineer, architect like a founder, and code like a professional.
+              That&apos;s why Gopher Lab exists. We teach you not how to build websites. We teach you how to think like a systems engineer, architect like a founder, and code like a professional.
             </p>
             <p className="mt-4 text-sm font-medium text-brand-sunset dark:text-brand-onDark">
               So the real question isn't: "Should I learn backend development?"

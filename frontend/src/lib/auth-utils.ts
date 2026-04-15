@@ -3,8 +3,6 @@
  * Handles JWT validation, token expiration, and access control
  */
 
-const TOKEN_EXPIRATION_TIME = 1 * 60 * 60 * 1000; // 1 hour in milliseconds
-
 interface TokenPayload {
   exp: number;
   iat: number;
