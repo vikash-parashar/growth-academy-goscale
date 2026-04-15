@@ -29,6 +29,16 @@ interface StudentDetail extends Student {
   };
 }
 
+// Get API URL with fallback - handles both dev and production
+const getApiUrl = () => {
+  const envUrl = process.env.NEXT_PUBLIC_API_URL;
+  if (envUrl && envUrl !== 'undefined') {
+    return envUrl;
+  }
+  // Fallback for production when env var is not set
+  return 'https://growth-academy-api.onrender.com';
+};
+
 export default function AdminDashboard() {
   const router = useRouter();
   const { isAuthenticated, token } = useStudent();
@@ -83,8 +93,9 @@ export default function AdminDashboard() {
       try {
         setLoading(true);
         console.log('Admin dashboard - Fetching students from API...');
+        const apiUrl = getApiUrl();
         
-        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/admin/students?page=${page}`, {
+        const res = await fetch(`${apiUrl}/api/admin/students?page=${page}`, {
           headers: { Authorization: `Bearer ${authToken}` },
         });
         
@@ -113,7 +124,8 @@ export default function AdminDashboard() {
   const loadStudentDetail = async (studentId: number) => {
     try {
       const authToken = adminToken || token;
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/admin/students/${studentId}`, {
+      const apiUrl = getApiUrl();
+      const res = await fetch(`${apiUrl}/api/admin/students/${studentId}`, {
         headers: { Authorization: `Bearer ${authToken}` },
       });
       if (!res.ok) throw new Error('Failed to load student detail');
@@ -128,8 +140,9 @@ export default function AdminDashboard() {
     if (!selectedStudent) return;
     try {
       const authToken = adminToken || token;
+      const apiUrl = getApiUrl();
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/admin/students/${selectedStudent.id}/notify`,
+        `${apiUrl}/api/admin/students/${selectedStudent.id}/notify`,
         {
           method: 'POST',
           headers: {

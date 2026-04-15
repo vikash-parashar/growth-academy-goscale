@@ -15,6 +15,16 @@ interface LoginForm {
 
 type LoginMode = 'student' | 'admin';
 
+// Get API URL with fallback - handles both dev and production
+const getApiUrl = () => {
+  const envUrl = process.env.NEXT_PUBLIC_API_URL;
+  if (envUrl && envUrl !== 'undefined') {
+    return envUrl;
+  }
+  // Fallback for production when env var is not set
+  return 'https://growth-academy-api.onrender.com';
+};
+
 export default function LoginPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -57,7 +67,9 @@ export default function LoginPage() {
 
       if (loginMode === 'student') {
         console.log('Starting student login with:', form.user_id_or_email);
-        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/students/login`, {
+        const apiUrl = getApiUrl();
+        console.log('Using API URL:', apiUrl);
+        const res = await fetch(`${apiUrl}/api/students/login`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
@@ -94,7 +106,9 @@ export default function LoginPage() {
       } else {
         // Admin login
         console.log('Starting admin login with:', form.user_id_or_email);
-        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/auth/login`, {
+        const apiUrl = getApiUrl();
+        console.log('Using API URL:', apiUrl);
+        const res = await fetch(`${apiUrl}/api/auth/login`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
