@@ -27,7 +27,7 @@ interface Session {
   session_name: string;
   day_number: number;
   content: string;
-  code_examples: any[];
+  code_examples: string[];
   has_mock_test: boolean;
 }
 

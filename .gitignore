@@ -22,3 +22,4 @@ node_modules/
 
 # Browser captures (often contain session cookies / SAPISID)
 *.har
+.vercel

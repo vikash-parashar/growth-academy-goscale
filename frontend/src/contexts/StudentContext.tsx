@@ -8,6 +8,7 @@ interface Student {
   user_id: string;
   first_name: string;
   last_name: string;
+  role?: string;
 }
 
 interface StudentContextType {
@@ -16,7 +17,7 @@ interface StudentContextType {
   isAuthenticated: boolean;
   login: (token: string, student: Student) => void;
   logout: () => void;
-  signup: (data: any) => Promise<any>;
+  signup: (data: Record<string, unknown>) => Promise<Record<string, unknown>>;
 }
 
 const StudentContext = createContext<StudentContextType | undefined>(undefined);
@@ -53,7 +54,7 @@ export function StudentProvider({ children }: { children: ReactNode }) {
     localStorage.removeItem('student_data');
   };
 
-  const signup = async (data: any) => {
+  const signup = async (data: Record<string, unknown>) => {
     const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/students/signup`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },

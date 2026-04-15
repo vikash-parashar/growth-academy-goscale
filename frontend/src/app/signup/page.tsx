@@ -86,7 +86,6 @@ export default function SignupPage() {
     if (/[!@#$%^&*()_+\-=\[\]{}|;:'",.<>?/\\]/.test(pwd)) score++;
 
     const colors = ['', 'bg-red-500', 'bg-orange-500', 'bg-yellow-500', 'bg-green-500'];
-    const messages = ['', 'Very Weak', 'Weak', 'Fair', 'Good', 'Strong'];
 
     setPasswordStrength({
       score,

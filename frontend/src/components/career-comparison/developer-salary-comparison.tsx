@@ -1,6 +1,6 @@
 "use client";
 
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, LineChart, Line, ComposedChart, Cell } from "recharts";
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, Line, ComposedChart, Cell } from "recharts";
 import { GlassCard } from "@/components/glass-card";
 import { Section } from "@/components/section";
 import {
@@ -36,11 +36,6 @@ function ChartTooltip({ active, payload, label }: TooltipContentProps) {
       </ul>
     </div>
   );
-}
-
-function formatCurrency(value: number, isUSD = false) {
-  if (isUSD) return `$${(value / 1000).toFixed(0)}K`;
-  return `₹${(value / 100000).toFixed(1)}L`;
 }
 
 const colors = {
