@@ -23,4 +23,4 @@ node_modules/
 # Browser captures (often contain session cookies / SAPISID)
 *.har
 .vercel
-.env*.local
+# Note: Root .env is included for development; backend/.env and frontend/.env* are excluded above
