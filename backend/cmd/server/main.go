@@ -69,7 +69,6 @@ func main() {
 	proofSvc := service.NewProofService(proofRepo, cfg)
 	empSvc := service.NewEmployeeService(empRepo)
 	studentSvc := service.NewStudentService(studentRepo, cfg)
-	certSvc := service.NewCertificateService(certRepo, studentRepo, empRepo)
 
 	// Initialize certificate generator with configuration
 	certGen := certificate.NewCertificateGenerator(certificate.GeneratorConfig{
@@ -209,6 +208,7 @@ func main() {
 		certs.GET("/:id/preview", certH.GetCertificatePreview)
 		certs.GET("/:id/preview-html", certH.PreviewCertificateHTML)
 		certs.GET("/:id/download/pdf", certH.DownloadCertificatePDF)
+	}
 
 	srvAddr := ":" + cfg.Port
 	slog.Info("listening", "addr", srvAddr)

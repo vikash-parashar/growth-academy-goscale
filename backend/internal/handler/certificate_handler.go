@@ -29,7 +29,7 @@ func NewCertificateHandler(certRepo *repository.CertificateRepository, generator
 // POST /api/admin/certificates
 func (h *CertificateHandler) CreateCertificate(c *gin.Context) {
 	// Verify admin token
-	_, err := auth.VerifyToken(c.GetHeader("Authorization"), "")
+	_, err := auth.ParseToken(c.GetHeader("Authorization"), "")
 	if err != nil {
 		c.JSON(http.StatusUnauthorized, gin.H{"error": "unauthorized"})
 		return
@@ -118,7 +118,7 @@ func (h *CertificateHandler) GetStudentCertificates(c *gin.Context) {
 
 	// Verify student token
 	token := c.GetHeader("Authorization")
-	_, err = auth.VerifyToken(token, "")
+	_, err = auth.ParseToken(token, "")
 	if err != nil {
 		c.JSON(http.StatusUnauthorized, gin.H{"error": "unauthorized"})
 		return
@@ -155,7 +155,7 @@ func (h *CertificateHandler) GetCourseCertificates(c *gin.Context) {
 	}
 
 	// Verify admin token
-	_, err = auth.VerifyToken(c.GetHeader("Authorization"), "")
+	_, err = auth.ParseToken(c.GetHeader("Authorization"), "")
 	if err != nil {
 		c.JSON(http.StatusUnauthorized, gin.H{"error": "unauthorized"})
 		return
@@ -189,7 +189,7 @@ func (h *CertificateHandler) IssueCertificate(c *gin.Context) {
 	}
 
 	// Verify admin token
-	_, err = auth.VerifyToken(c.GetHeader("Authorization"), "")
+	_, err = auth.ParseToken(c.GetHeader("Authorization"), "")
 	if err != nil {
 		c.JSON(http.StatusUnauthorized, gin.H{"error": "unauthorized"})
 		return
@@ -227,7 +227,7 @@ func (h *CertificateHandler) RejectCertificate(c *gin.Context) {
 	}
 
 	// Verify admin token
-	_, err = auth.VerifyToken(c.GetHeader("Authorization"), "")
+	_, err = auth.ParseToken(c.GetHeader("Authorization"), "")
 	if err != nil {
 		c.JSON(http.StatusUnauthorized, gin.H{"error": "unauthorized"})
 		return
@@ -259,7 +259,7 @@ func (h *CertificateHandler) RejectCertificate(c *gin.Context) {
 // GET /api/admin/certificates/pending
 func (h *CertificateHandler) GetPendingCertificates(c *gin.Context) {
 	// Verify admin token
-	_, err := auth.VerifyToken(c.GetHeader("Authorization"), "")
+	_, err := auth.ParseToken(c.GetHeader("Authorization"), "")
 	if err != nil {
 		c.JSON(http.StatusUnauthorized, gin.H{"error": "unauthorized"})
 		return
@@ -291,7 +291,7 @@ func (h *CertificateHandler) GetCertificatePreview(c *gin.Context) {
 	}
 
 	// Verify authentication
-	_, err = auth.VerifyToken(c.GetHeader("Authorization"), "")
+	_, err = auth.ParseToken(c.GetHeader("Authorization"), "")
 	if err != nil {
 		c.JSON(http.StatusUnauthorized, gin.H{"error": "unauthorized"})
 		return
@@ -330,7 +330,7 @@ func (h *CertificateHandler) DownloadCertificatePDF(c *gin.Context) {
 	}
 
 	// Verify authentication
-	_, err = auth.VerifyToken(c.GetHeader("Authorization"), "")
+	_, err = auth.ParseToken(c.GetHeader("Authorization"), "")
 	if err != nil {
 		c.JSON(http.StatusUnauthorized, gin.H{"error": "unauthorized"})
 		return
@@ -374,7 +374,7 @@ func (h *CertificateHandler) PreviewCertificateHTML(c *gin.Context) {
 	}
 
 	// Verify authentication
-	_, err = auth.VerifyToken(c.GetHeader("Authorization"), "")
+	_, err = auth.ParseToken(c.GetHeader("Authorization"), "")
 	if err != nil {
 		c.JSON(http.StatusUnauthorized, gin.H{"error": "unauthorized"})
 		return

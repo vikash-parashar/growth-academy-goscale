@@ -1,10 +1,8 @@
 package certificate
-package certificate
 
 import (
 	"bytes"
 	"fmt"
-	"image/color"
 	"os"
 	"time"
 
@@ -56,12 +54,12 @@ func (cg *CertificateGenerator) GeneratePDF(cert *model.Certificate, studentName
 	pdf.SetFont("Arial", "B", 28)
 	pdf.SetTextColor(0, 51, 102) // Dark blue
 	pdf.SetY(25)
-	pdf.CellFormat(277, 0, cg.config.InstituteName, 0, 1, "C", false, 0, "")
+	pdf.CellFormat(277, 10, cg.config.InstituteName, "", 1, "C", false, 0, "")
 
 	pdf.SetFont("Arial", "I", 12)
 	pdf.SetTextColor(100, 100, 100)
 	pdf.SetY(38)
-	pdf.CellFormat(277, 0, cg.config.InstituteTagline, 0, 1, "C", false, 0, "")
+	pdf.CellFormat(277, 5, cg.config.InstituteTagline, "", 1, "C", false, 0, "")
 
 	// Divider line
 	pdf.SetDrawColor(184, 134, 11)
@@ -72,29 +70,29 @@ func (cg *CertificateGenerator) GeneratePDF(cert *model.Certificate, studentName
 	pdf.SetFont("Arial", "B", 24)
 	pdf.SetTextColor(184, 134, 11) // Dark gold
 	pdf.SetY(52)
-	pdf.CellFormat(277, 0, "Certificate of Completion", 0, 1, "C", false, 0, "")
+	pdf.CellFormat(277, 10, "Certificate of Completion", "", 1, "C", false, 0, "")
 
 	// Main content
 	pdf.SetFont("Arial", "", 11)
 	pdf.SetTextColor(0, 0, 0)
 	pdf.SetY(65)
-	pdf.CellFormat(277, 5, "This is to certify that", 0, 1, "C", false, 0, "")
+	pdf.CellFormat(277, 5, "This is to certify that", "", 1, "C", false, 0, "")
 
 	// Student name - highlighted
 	pdf.SetFont("Arial", "B", 18)
 	pdf.SetTextColor(0, 51, 102)
 	pdf.SetY(72)
-	pdf.CellFormat(277, 8, studentName, 0, 1, "C", false, 0, "")
+	pdf.CellFormat(277, 8, studentName, "", 1, "C", false, 0, "")
 
 	// Course information
 	pdf.SetFont("Arial", "", 11)
 	pdf.SetTextColor(0, 0, 0)
 	pdf.SetY(82)
 	certText := fmt.Sprintf("has successfully completed the %s program", cg.config.CourseName)
-	pdf.CellFormat(277, 5, certText, 0, 1, "C", false, 0, "")
+	pdf.CellFormat(277, 5, certText, "", 1, "C", false, 0, "")
 
 	pdf.SetY(88)
-	pdf.CellFormat(277, 5, fmt.Sprintf("with a duration of %s", cg.config.CourseDuration), 0, 1, "C", false, 0, "")
+	pdf.CellFormat(277, 5, fmt.Sprintf("with a duration of %s", cg.config.CourseDuration), "", 1, "C", false, 0, "")
 
 	// Performance details
 	pdf.SetFont("Arial", "B", 10)
@@ -114,7 +112,7 @@ func (cg *CertificateGenerator) GeneratePDF(cert *model.Certificate, studentName
 		pdf.SetFont("Arial", "B", 9)
 		pdf.SetY(115)
 		pdf.SetX(40)
-		pdf.CellFormat(200, 5, "Skills Acquired:", 0, 1, "L", false, 0, "")
+		pdf.CellFormat(200, 5, "Skills Acquired:", "", 1, "L", false, 0, "")
 		
 		pdf.SetFont("Arial", "", 9)
 		topicsStr := ""
@@ -126,7 +124,7 @@ func (cg *CertificateGenerator) GeneratePDF(cert *model.Certificate, studentName
 		}
 		
 		pdf.SetX(45)
-		pdf.MultiCell(200, 4, topicsStr, 0, "L")
+		pdf.MultiCell(200, 4, topicsStr, "", "L", false)
 	}
 
 	// Divider line before footer
@@ -138,7 +136,7 @@ func (cg *CertificateGenerator) GeneratePDF(cert *model.Certificate, studentName
 	pdf.SetFont("Arial", "", 8)
 	pdf.SetTextColor(100, 100, 100)
 	pdf.SetY(145)
-	pdf.CellFormat(277, 3, fmt.Sprintf("Certificate No: %s | Date: %s", cert.CertificateNumber, cert.IssuedDate.Format("January 2, 2006")), 0, 1, "C", false, 0, "")
+	pdf.CellFormat(277, 3, fmt.Sprintf("Certificate No: %s | Date: %s", cert.CertificateNumber, cert.IssuedDate.Format("January 2, 2006")), "", 1, "C", false, 0, "")
 
 	// Signature section
 	pdf.SetY(155)
@@ -148,44 +146,44 @@ func (cg *CertificateGenerator) GeneratePDF(cert *model.Certificate, studentName
 	// Left signature - Institute representative
 	pdf.SetX(40)
 	pdf.SetY(160)
-	pdf.CellFormat(60, 4, "_________________", 0, 1, "C", false, 0, "")
+	pdf.CellFormat(60, 4, "_________________", "", 1, "C", false, 0, "")
 	pdf.SetX(40)
 	pdf.SetFont("Arial", "", 9)
 	pdf.SetTextColor(0, 0, 0)
-	pdf.CellFormat(60, 4, "Institute Director", 0, 1, "C", false, 0, "")
+	pdf.CellFormat(60, 4, "Institute Director", "", 1, "C", false, 0, "")
 	pdf.SetX(40)
-	pdf.CellFormat(60, 3, cg.config.InstituteName, 0, 1, "C", false, 0, "")
+	pdf.CellFormat(60, 3, cg.config.InstituteName, "", 1, "C", false, 0, "")
 
 	// Middle - stamp area
 	pdf.SetFont("Arial", "B", 9)
 	pdf.SetTextColor(184, 134, 11)
 	pdf.SetX(140)
 	pdf.SetY(160)
-	pdf.CellFormat(60, 4, "GOPHER LAB", 0, 1, "C", false, 0, "")
+	pdf.CellFormat(60, 4, "GOPHER LAB", "", 1, "C", false, 0, "")
 	pdf.SetX(140)
 	pdf.SetFont("Arial", "", 7)
 	pdf.SetTextColor(100, 100, 100)
-	pdf.CellFormat(60, 3, "Certified Teaching Institute", 0, 1, "C", false, 0, "")
+	pdf.CellFormat(60, 3, "Certified Teaching Institute", "", 1, "C", false, 0, "")
 
 	// Right signature - Teacher
 	pdf.SetX(200)
 	pdf.SetY(160)
 	pdf.SetFont("Arial", "B", 10)
 	pdf.SetTextColor(0, 51, 102)
-	pdf.CellFormat(60, 4, "_________________", 0, 1, "C", false, 0, "")
+	pdf.CellFormat(60, 4, "_________________", "", 1, "C", false, 0, "")
 	pdf.SetX(200)
 	pdf.SetFont("Arial", "", 9)
 	pdf.SetTextColor(0, 0, 0)
-	pdf.CellFormat(60, 4, cg.config.TeacherName, 0, 1, "C", false, 0, "")
+	pdf.CellFormat(60, 4, cg.config.TeacherName, "", 1, "C", false, 0, "")
 	pdf.SetX(200)
-	pdf.CellFormat(60, 3, cg.config.TeacherTitle, 0, 1, "C", false, 0, "")
+	pdf.CellFormat(60, 3, cg.config.TeacherTitle, "", 1, "C", false, 0, "")
 
 	// Footer message
 	pdf.SetY(185)
 	pdf.SetFont("Arial", "I", 8)
 	pdf.SetTextColor(100, 100, 100)
 	msg := fmt.Sprintf("This certificate is awarded in recognition of successfully completing %s training with demonstrated expertise and practical programming skills. | %s", cg.config.CourseName, cg.config.WebsiteDescription)
-	pdf.MultiCell(277, 3, msg, 0, "C")
+	pdf.MultiCell(277, 3, msg, "", "C", false)
 
 	// Return PDF bytes
 	var buf bytes.Buffer
