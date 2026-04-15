@@ -100,13 +100,21 @@ export default function LoginPage() {
         }
 
         const data = await res.json();
-        // Store admin token in localStorage
+        // Store admin token in localStorage and clear student session
         if (data.token) {
+          // Clear any existing student session
+          localStorage.removeItem('studentToken');
+          localStorage.removeItem('studentData');
+          
+          // Store admin token
           localStorage.setItem('adminToken', data.token);
+          
           showNotification('Successfully logged into Admin Portal!', 'success', 3000);
           setTimeout(() => {
             router.push('/admin/dashboard');
           }, 1000);
+        } else {
+          throw new Error('No token received from server');
         }
       }
     } catch (err) {

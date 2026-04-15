@@ -38,23 +38,33 @@ export default function AdminDashboard() {
   const [page, setPage] = useState(1);
   const [total, setTotal] = useState(0);
   const [adminToken, setAdminToken] = useState<string | null>(null);
+  const [authChecked, setAuthChecked] = useState(false);
 
   useSessionTimeout(); // Enable 1-hour session timeout
 
+  // First useEffect: Check authentication
   useEffect(() => {
-    // Check for admin authentication (stored in localStorage after admin login)
     const storedAdminToken = typeof window !== 'undefined' ? localStorage.getItem('adminToken') : null;
     setAdminToken(storedAdminToken);
+    setAuthChecked(true);
     
     if (!storedAdminToken && !isAuthenticated) {
       router.push('/login');
-      return;
     }
+  }, [isAuthenticated, router]);
 
+  // Second useEffect: Load students (only after auth is checked)
+  useEffect(() => {
+    if (!authChecked) return; // Wait for auth check to complete
+    
     const loadStudents = async () => {
       try {
         setLoading(true);
-        const authToken = storedAdminToken || token;
+        const authToken = adminToken || token;
+        if (!authToken) {
+          console.error('No auth token available');
+          return;
+        }
         const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/admin/students?page=${page}`, {
           headers: { Authorization: `Bearer ${authToken}` },
         });
@@ -70,7 +80,7 @@ export default function AdminDashboard() {
     };
 
     loadStudents();
-  }, [isAuthenticated, page, router, token, adminToken]);
+  }, [authChecked, page, adminToken, token]);
 
   const loadStudentDetail = async (studentId: number) => {
     try {
