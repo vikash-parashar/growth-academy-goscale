@@ -11,7 +11,7 @@ INSERT INTO students (first_name, last_name, email, phone, whatsapp_number, user
 	'+919876543210',
 	'+919876543210',
 	'teststudent',
-	'$2a$10$/FE1Ld392dix2Wi2JikJIOc.DG5xshjne.VZFe15ovLbdWuKOiAka',
+	E'$2a$10$/FE1Ld392dix2Wi2JikJIOc.DG5xshjne.VZFe15ovLbdWuKOiAka',
 	'Learn Go and systems thinking',
 	'active'
 ) ON CONFLICT (user_id) DO NOTHING;
@@ -19,5 +19,5 @@ INSERT INTO students (first_name, last_name, email, phone, whatsapp_number, user
 -- Insert test admin (bcrypt hash cost 10 for "TestAdmin@2024")
 INSERT INTO admin_users (email, password_hash) VALUES (
 	'testadmin@gopher.lab',
-	'$2a$10$/FE1Ld392dix2Wi2JikJIOc.DG5xshjne.VZFe15ovLbdWuKOiAka'
+	E'$2a$10$/FE1Ld392dix2Wi2JikJIOc.DG5xshjne.VZFe15ovLbdWuKOiAka'
 ) ON CONFLICT (email) DO NOTHING;
