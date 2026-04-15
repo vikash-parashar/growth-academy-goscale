@@ -11,6 +11,7 @@ import (
 
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
+	"github.com/goscalelabs/api/internal/certificate"
 	"github.com/goscalelabs/api/internal/config"
 	"github.com/goscalelabs/api/internal/database"
 	"github.com/goscalelabs/api/internal/handler"
@@ -57,6 +58,7 @@ func main() {
 	empRepo := repository.NewEmployeeRepository(db)
 	adminRepo := repository.NewAdminRepository(db)
 	studentRepo := repository.NewStudentRepository(db)
+	certRepo := repository.NewCertificateRepository(db)
 
 	notifier := notify.New(cfg)
 	leadSvc := service.NewLeadService(leadRepo, notifier, cfg)
@@ -67,6 +69,19 @@ func main() {
 	proofSvc := service.NewProofService(proofRepo, cfg)
 	empSvc := service.NewEmployeeService(empRepo)
 	studentSvc := service.NewStudentService(studentRepo, cfg)
+	certSvc := service.NewCertificateService(certRepo, studentRepo, empRepo)
+
+	// Initialize certificate generator with configuration
+	certGen := certificate.NewCertificateGenerator(certificate.GeneratorConfig{
+		InstituteName:       "Gopher Lab",
+		InstituteTagline:    "Professional Backend Development Training",
+		TeacherName:         "Your Name", // This should be configurable
+		TeacherTitle:        "Senior Backend Engineer",
+		WebsiteName:         "Gopher Lab",
+		WebsiteDescription: "Industry-leading online Backend Development Training Institute",
+		CourseName:          "Backend Developer Training",
+		CourseDuration:      "6 Months",
+	})
 
 	authH := handler.NewAuthHandler(cfg, adminRepo)
 	leadH := handler.NewLeadHandler(leadSvc)
@@ -79,6 +94,7 @@ func main() {
 	annH := handler.NewAnnouncementsHandler(cfg)
 	studentH := handler.NewStudentHandler(studentSvc, studentRepo, cfg)
 	adminH := handler.NewAdminHandler(studentRepo, studentSvc, cfg)
+	certH := handler.NewCertificateHandler(certRepo, certGen)
 	healthH := &handler.HealthHandler{DB: db}
 
 	loginLimiter := middleware.NewLoginIPLimiter()
@@ -123,6 +139,7 @@ func main() {
 	{
 		student.POST("/sessions/:sessionId/complete", studentH.MarkSessionComplete)
 		student.GET("/courses/:courseId/progress", studentH.GetProgress)
+		student.GET("/certificates", certH.GetStudentCertificates)
 	}
 
 	r.Static("/uploads", cfg.UploadDir)
@@ -167,6 +184,14 @@ func main() {
 
 		admin.POST("/notifications/broadcast", notifH.Broadcast)
 
+		// Certificate management endpoints
+		admin.POST("/certificates", certH.CreateCertificate)
+		admin.GET("/certificates/pending", certH.GetPendingCertificates)
+		admin.GET("/certificates/:id", certH.GetCertificate)
+		admin.GET("/courses/:courseId/certificates", certH.GetCourseCertificates)
+		admin.PATCH("/certificates/:id/issue", certH.IssueCertificate)
+		admin.PATCH("/certificates/:id/reject", certH.RejectCertificate)
+
 		// Student management endpoints
 		admin.GET("/students", adminH.GetStudents)
 		admin.GET("/students/:studentId", adminH.GetStudentDetail)
@@ -176,6 +201,14 @@ func main() {
 		admin.GET("/dashboard/stats", adminH.GetDashboardStats)
 		admin.POST("/students/:studentId/notify", adminH.SendNotification)
 	}
+
+	// Certificate view and download routes (authenticated)
+	certs := r.Group("/api/certificates")
+	certs.Use(middleware.AdminJWT(cfg))
+	{
+		certs.GET("/:id/preview", certH.GetCertificatePreview)
+		certs.GET("/:id/preview-html", certH.PreviewCertificateHTML)
+		certs.GET("/:id/download/pdf", certH.DownloadCertificatePDF)
 
 	srvAddr := ":" + cfg.Port
 	slog.Info("listening", "addr", srvAddr)

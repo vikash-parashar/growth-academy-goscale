@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gopher Lab - Certificate Preview</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            background: linear-gradient(to bottom right, #f1f5f9, #e2e8f0);
+            font-family: Arial, sans-serif;
+            padding: 40px 20px;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .header h1 {
+            font-size: 2.5rem;
+            color: #111827;
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            color: #4b5563;
+            font-size: 16px;
+        }
+        
+        .content {
+            display: grid;
+            grid-template-columns: 350px 1fr;
+            gap: 30px;
+            align-items: start;
+        }
+        
+        .form-panel {
+            background: white;
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 20px;
+        }
+        
+        .form-panel h2 {
+            font-size: 1.25rem;
+            margin-bottom: 20px;
+            color: #111827;
+        }
+        
+        .form-group {
+            margin-bottom: 16px;
+        }
+        
+        .form-group label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #374151;
+        }
+        
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            font-size: 14px;
+            font-family: Arial, sans-serif;
+            resize: none;
+        }
+        
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+        
+        .button {
+            width: 100%;
+            padding: 10px;
+            background: #2563eb;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 16px;
+            transition: background 0.3s;
+        }
+        
+        .button:hover {
+            background: #1d4ed8;
+        }
+        
+        .certificate-wrapper {
+            display: flex;
+            justify-content: center;
+        }
+        
+        /* A4 Landscape Certificate */
+        .certificate {
+            width: 1188px;
+            height: 840px;
+            background: #fffaf0;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            position: relative;
+            border: 4px solid #b8860b;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .cert-inner {
+            border: 1px solid #daa520;
+            margin: 8px;
+            height: calc(100% - 16px);
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        
+        .cert-header {
+            text-align: center;
+            border-bottom: 2px solid #b8860b;
+            padding-bottom: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .cert-header h1 {
+            font-size: 3rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #003366;
+        }
+        
+        .cert-header .tagline {
+            font-size: 12px;
+            font-style: italic;
+            color: #666;
+            margin-bottom: 15px;
+        }
+        
+        .cert-header h2 {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #b8860b;
+        }
+        
+        .cert-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            text-align: center;
+        }
+        
+        .cert-content p {
+            font-size: 16px;
+            color: #333;
+            margin: 8px 0;
+        }
+        
+        .cert-content .student-name {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #003366;
+            margin: 15px 0;
+        }
+        
+        .cert-content .course-text {
+            font-size: 16px;
+            color: #333;
+            margin: 10px 0;
+        }
+        
+        .cert-content .course-text .bold {
+            font-weight: bold;
+        }
+        
+        .performance-metrics {
+            display: flex;
+            justify-content: center;
+            gap: 60px;
+            margin: 30px 0 20px 0;
+            padding: 20px 0;
+            border-top: 1px solid #ddd;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        .metric {
+            text-align: center;
+        }
+        
+        .metric-label {
+            font-size: 12px;
+            font-weight: bold;
+            color: #555;
+        }
+        
+        .metric-value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #003366;
+            margin-top: 5px;
+        }
+        
+        .skills-section {
+            margin: 20px 0;
+            padding-top: 20px;
+            border-top: 1px solid #ddd;
+        }
+        
+        .skills-label {
+            font-size: 12px;
+            font-weight: bold;
+            color: #555;
+            margin-bottom: 8px;
+        }
+        
+        .skills-text {
+            font-size: 11px;
+            color: #666;
+            line-height: 1.6;
+        }
+        
+        .cert-footer {
+            border-top: 2px solid #b8860b;
+            padding-top: 20px;
+            text-align: center;
+        }
+        
+        .cert-number {
+            font-size: 11px;
+            color: #999;
+            margin-bottom: 15px;
+        }
+        
+        .signature-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            margin-bottom: 15px;
+        }
+        
+        .signature-block {
+            flex: 1;
+            text-align: center;
+        }
+        
+        .signature-line {
+            border-top: 1.5px solid #333;
+            padding-top: 5px;
+            font-size: 10px;
+            font-weight: bold;
+            margin-bottom: 8px;
+            width: 100px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .signature-name {
+            font-size: 10px;
+            font-weight: bold;
+            color: #333;
+        }
+        
+        .signature-title {
+            font-size: 10px;
+            color: #555;
+        }
+        
+        .seal-section {
+            flex: 1;
+            text-align: center;
+        }
+        
+        .seal {
+            width: 80px;
+            height: 80px;
+            border: 2px solid #b8860b;
+            border-radius: 50%;
+            background: rgba(218, 165, 32, 0.15);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 8px;
+            font-size: 12px;
+            font-weight: bold;
+            color: #b8860b;
+            text-align: center;
+            line-height: 1.2;
+        }
+        
+        .seal-text {
+            font-size: 10px;
+            color: #999;
+        }
+        
+        .cert-footer-text {
+            font-size: 10px;
+            color: #999;
+            font-style: italic;
+            line-height: 1.5;
+            margin-top: 10px;
+        }
+        
+        .features {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-top: 30px;
+            background: white;
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+        
+        .feature {
+            display: flex;
+            gap: 12px;
+        }
+        
+        .feature-icon {
+            color: #2563eb;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+        
+        .feature-content h3 {
+            font-size: 14px;
+            font-weight: 600;
+            color: #111827;
+        }
+        
+        .feature-content p {
+            font-size: 13px;
+            color: #6b7280;
+            margin-top: 4px;
+        }
+        
+        .tip-box {
+            margin-top: 24px;
+            padding: 16px;
+            background: #eff6ff;
+            border: 1px solid #93c5fd;
+            border-radius: 8px;
+        }
+        
+        .tip-box p {
+            font-size: 14px;
+            color: #1e3a8a;
+            font-weight: 500;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📜 Certificate Preview</h1>
+            <p>Here's exactly how your certificate will look when generated</p>
+        </div>
+        
+        <div class="content">
+            {/* Form Panel */}
+            <div class="form-panel">
+                <h2>Edit Details</h2>
+                
+                <div class="form-group">
+                    <label>Student Name</label>
+                    <input type="text" id="studentName" value="Vikash Parashar" placeholder="Enter student name">
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Final Score (%)</label>
+                        <input type="number" id="score" min="0" max="100" value="92" placeholder="Score">
+                    </div>
+                    <div class="form-group">
+                        <label>Attendance</label>
+                        <input type="number" id="classesAttended" min="0" value="23" placeholder="Attended">
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label>Total Classes</label>
+                    <input type="number" id="totalClasses" min="1" value="24" placeholder="Total">
+                </div>
+                
+                <div class="form-group">
+                    <label>Skills Learned</label>
+                    <textarea id="topics" rows="4">Go Programming • REST APIs • Database Design • Docker • Kubernetes • System Design</textarea>
+                </div>
+                
+                <button class="button" onclick="updateCertificate()">✓ Update Preview</button>
+            </div>
+            
+            {/* Certificate Preview */}
+            <div>
+                <div class="certificate-wrapper">
+                    <div class="certificate">
+                        <div class="cert-inner">
+                            {/* Header */}
+                            <div class="cert-header">
+                                <h1>Gopher Lab</h1>
+                                <p class="tagline">Empowering Developers with Modern Programming Excellence</p>
+                                <h2>Certificate of Completion</h2>
+                            </div>
+                            
+                            {/* Content */}
+                            <div class="cert-content">
+                                <p>This is to certify that</p>
+                                <p class="student-name" id="certStudentName">Vikash Parashar</p>
+                                <p class="course-text">
+                                    has successfully completed the <span class="bold">Backend Developer Training Program</span>
+                                </p>
+                                <p class="course-text">with a duration of <span class="bold">6 Months</span></p>
+                                
+                                {/* Performance Metrics */}
+                                <div class="performance-metrics">
+                                    <div class="metric">
+                                        <div class="metric-label">Final Score</div>
+                                        <div class="metric-value" id="certScore">92%</div>
+                                    </div>
+                                    <div class="metric">
+                                        <div class="metric-label">Attendance</div>
+                                        <div class="metric-value" id="certAttendance">23/24</div>
+                                    </div>
+                                    <div class="metric">
+                                        <div class="metric-label">Attendance Rate</div>
+                                        <div class="metric-value" id="certRate">96%</div>
+                                    </div>
+                                </div>
+                                
+                                {/* Skills */}
+                                <div class="skills-section">
+                                    <div class="skills-label">Skills Acquired</div>
+                                    <div class="skills-text" id="certSkills">
+                                        Go Programming • REST APIs • Database Design • Docker • Kubernetes • System Design
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            {/* Footer */}
+                            <div class="cert-footer">
+                                <div class="cert-number">Certificate No: GOPHER-1713170400000-456789 | Date: April 15, 2026</div>
+                                
+                                <div class="signature-section">
+                                    {/* Director */}
+                                    <div class="signature-block">
+                                        <div class="signature-line"></div>
+                                        <div class="signature-name">Institute Director</div>
+                                        <div class="signature-title">Gopher Lab</div>
+                                    </div>
+                                    
+                                    {/* Seal */}
+                                    <div class="seal-section">
+                                        <div class="seal">GOPHER<br>LAB</div>
+                                        <div class="seal-text">Certified Institute</div>
+                                    </div>
+                                    
+                                    {/* Teacher */}
+                                    <div class="signature-block">
+                                        <div class="signature-line"></div>
+                                        <div class="signature-name">Course Instructor</div>
+                                        <div class="signature-title">Backend Training</div>
+                                    </div>
+                                </div>
+                                
+                                <div class="cert-footer-text">
+                                    This certificate is awarded in recognition of successfully completing Backend Developer Training with demonstrated expertise and practical programming skills.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                {/* Features Info */}
+                <div class="features">
+                    <div class="feature">
+                        <div class="feature-icon">✓</div>
+                        <div class="feature-content">
+                            <h3>Professional Design</h3>
+                            <p>Gold borders with Gopher Lab branding</p>
+                        </div>
+                    </div>
+                    <div class="feature">
+                        <div class="feature-icon">✓</div>
+                        <div class="feature-content">
+                            <h3>Student Details</h3>
+                            <p>Name, score, and attendance metrics</p>
+                        </div>
+                    </div>
+                    <div class="feature">
+                        <div class="feature-icon">✓</div>
+                        <div class="feature-content">
+                            <h3>Skills Section</h3>
+                            <p>Display of learned topics and skills</p>
+                        </div>
+                    </div>
+                    <div class="feature">
+                        <div class="feature-icon">✓</div>
+                        <div class="feature-content">
+                            <h3>Digital Seal</h3>
+                            <p>Official Gopher Lab certification mark</p>
+                        </div>
+                    </div>
+                    <div class="feature">
+                        <div class="feature-icon">✓</div>
+                        <div class="feature-content">
+                            <h3>Signature Lines</h3>
+                            <p>Director, Seal, and Instructor signatures</p>
+                        </div>
+                    </div>
+                    <div class="feature">
+                        <div class="feature-icon">✓</div>
+                        <div class="feature-content">
+                            <h3>Unique Certificate Number</h3>
+                            <p>Each certificate gets a unique identifier</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="tip-box">
+                    <p>💡 Tip: Try editing the form on the left to see how different student details appear on the certificate!</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        function updateCertificate() {
+            const studentName = document.getElementById('studentName').value;
+            const score = document.getElementById('score').value;
+            const attended = document.getElementById('classesAttended').value;
+            const total = document.getElementById('totalClasses').value;
+            const topics = document.getElementById('topics').value;
+            const rate = Math.round((attended / total) * 100);
+            
+            document.getElementById('certStudentName').textContent = studentName;
+            document.getElementById('certScore').textContent = score + '%';
+            document.getElementById('certAttendance').textContent = attended + '/' + total;
+            document.getElementById('certRate').textContent = rate + '%';
+            document.getElementById('certSkills').textContent = topics;
+        }
+        
+        // Auto-update on input
+        document.getElementById('studentName').addEventListener('input', updateCertificate);
+        document.getElementById('score').addEventListener('input', updateCertificate);
+        document.getElementById('classesAttended').addEventListener('input', updateCertificate);
+        document.getElementById('totalClasses').addEventListener('input', updateCertificate);
+        document.getElementById('topics').addEventListener('input', updateCertificate);
+    </script>
+</body>
+</html>

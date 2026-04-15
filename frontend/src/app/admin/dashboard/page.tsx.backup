@@ -1,0 +1,342 @@
+'use client';
+
+import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { getApiUrl } from '@/lib/api-url';
+
+interface Student {
+  id: number;
+  first_name: string;
+  last_name: string;
+  email: string;
+  phone: string;
+  user_id: string;
+  goal: string;
+  status: string;
+  created_at: string;
+}
+
+interface StudentDetail extends Student {
+  payment?: {
+    plan_name: string;
+    total_amount_paise: number;
+    paid_amount_paise: number;
+    pending_amount_paise: number;
+    status: string;
+    percentage_paid: number;
+  };
+}
+
+// Get API URL with fallback - handles both dev and production
+const getApiUrl = () => {
+  const envUrl = process.env.NEXT_PUBLIC_API_URL;
+  if (envUrl && envUrl !== 'undefined') {
+    return envUrl;
+  }
+  // Fallback for production when env var is not set
+  return 'https://growth-academy-api.onrender.com';
+};
+
+export default function AdminDashboard() {
+  const router = useRouter();
+  const { isAuthenticated, token } = useStudent();
+  const [students, setStudents] = useState<Student[]>([]);
+  const [selectedStudent, setSelectedStudent] = useState<StudentDetail | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [page, setPage] = useState(1);
+  const [total, setTotal] = useState(0);
+  const [adminToken, setAdminToken] = useState<string | null>(null);
+  const [isChecking, setIsChecking] = useState(true);
+
+  useSessionTimeout(); // Enable 1-hour session timeout
+
+  // First useEffect: Check authentication immediately but don't redirect
+  useEffect(() => {
+    const checkAuth = () => {
+      const storedAdminToken = typeof window !== 'undefined' ? localStorage.getItem('adminToken') : null;
+      console.log('Admin dashboard - Auth check. adminToken:', storedAdminToken ? '✓ exists' : '✗ missing');
+      
+      setAdminToken(storedAdminToken);
+      setIsChecking(false);
+      
+      if (!storedAdminToken && !isAuthenticated) {
+        console.log('Admin dashboard - No token, redirecting to login');
+        // Add a small delay to ensure state updates before redirect
+        const timer = setTimeout(() => {
+          router.push('/login');
+        }, 100);
+        return () => clearTimeout(timer);
+      }
+    };
+    
+    checkAuth();
+  }, [isAuthenticated, router]);
+
+  // Second useEffect: Load students only after auth check is done and token exists
+  useEffect(() => {
+    if (isChecking) {
+      console.log('Admin dashboard - Still checking auth, waiting...');
+      return;
+    }
+    
+    const authToken = adminToken || token;
+    if (!authToken) {
+      console.log('Admin dashboard - No auth token available, skipping load');
+      return;
+    }
+    
+    console.log('Admin dashboard - Auth verified, loading students...');
+    
+    const loadStudents = async () => {
+      try {
+        setLoading(true);
+        console.log('Admin dashboard - Fetching students from API...');
+        const apiUrl = getApiUrl();
+        
+        const res = await fetch(`${apiUrl}/api/admin/students?page=${page}`, {
+          headers: { Authorization: `Bearer ${authToken}` },
+        });
+        
+        console.log('Admin dashboard - Students response status:', res.status);
+        
+        if (!res.ok) {
+          console.error('Failed to load students, status:', res.status);
+          throw new Error('Failed to load students');
+        }
+        
+        const data = await res.json();
+        setStudents(data.students || []);
+        setTotal(data.total || 0);
+        console.log('Admin dashboard - ✓ Students loaded:', data.students?.length || 0);
+      } catch (error) {
+        console.error('Error loading students:', error);
+        setStudents([]);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadStudents();
+  }, [isChecking, page, adminToken, token]);
+
+  const loadStudentDetail = async (studentId: number) => {
+    try {
+      const authToken = adminToken || token;
+      const apiUrl = getApiUrl();
+      const res = await fetch(`${apiUrl}/api/admin/students/${studentId}`, {
+        headers: { Authorization: `Bearer ${authToken}` },
+      });
+      if (!res.ok) throw new Error('Failed to load student detail');
+      const data = await res.json();
+      setSelectedStudent(data);
+    } catch (error) {
+      console.error('Error loading student detail:', error);
+    }
+  };
+
+  const sendNotification = async (type: 'email' | 'sms', message: string) => {
+    if (!selectedStudent) return;
+    try {
+      const authToken = adminToken || token;
+      const apiUrl = getApiUrl();
+      const res = await fetch(
+        `${apiUrl}/api/admin/students/${selectedStudent.id}/notify`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${authToken}`,
+          },
+          body: JSON.stringify({
+            type,
+            title: 'Notification from Admin',
+            message,
+          }),
+        }
+      );
+      if (res.ok) {
+        alert(`${type.toUpperCase()} sent successfully!`);
+      }
+    } catch (error) {
+      console.error('Error sending notification:', error);
+    }
+  };
+
+  return (
+    <div className="min-h-screen bg-slate-50 dark:bg-slate-950">
+      <SiteHeader />
+      <div className="page-shell py-8">
+        <div className="mb-8">
+          <h1 className="text-4xl font-bold text-slate-900 dark:text-white">Admin Dashboard</h1>
+          <p className="mt-2 text-slate-600 dark:text-slate-400">Manage students, payments, and send notifications</p>
+          
+          {/* Portal Badge */}
+          <div className="mt-4 inline-block">
+            <div className="px-4 py-2 bg-purple-500/20 border border-purple-500/50 rounded-full">
+              <p className="text-purple-700 dark:text-purple-200 text-sm font-medium">
+                ✓ You are in the <span className="font-semibold">Admin Portal</span>
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          {/* Students List */}
+          <div className="lg:col-span-1 rounded-xl border border-slate-200 bg-white p-6 dark:border-slate-700 dark:bg-slate-900">
+            <h2 className="text-2xl font-bold text-slate-900 mb-4 dark:text-white">Students ({total})</h2>
+            <div className="space-y-2">
+              {loading ? (
+                <p className="text-slate-600 dark:text-slate-400">Loading...</p>
+              ) : students.length === 0 ? (
+                <p className="text-slate-600 dark:text-slate-400">No students found</p>
+              ) : (
+                <>
+                  {students.map((student) => (
+                    <button
+                      key={student.id}
+                      onClick={() => loadStudentDetail(student.id)}
+                      className={`w-full text-left rounded-lg border-l-4 p-3 transition ${
+                        selectedStudent?.id === student.id
+                          ? 'border-blue-600 bg-blue-50 text-slate-900 dark:bg-blue-900/20 dark:text-white'
+                          : 'border-slate-200 bg-slate-50 text-slate-700 hover:bg-slate-100 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-slate-700'
+                      }`}
+                    >
+                      <div className="font-semibold">
+                        {student.first_name} {student.last_name}
+                      </div>
+                      <div className="text-xs text-slate-600 dark:text-slate-400">{student.email}</div>
+                    </button>
+                  ))}
+                  <div className="flex gap-2 border-t border-slate-200 pt-4 dark:border-slate-700">
+                    <button
+                      onClick={() => setPage(Math.max(1, page - 1))}
+                      disabled={page === 1}
+                      className="rounded px-3 py-2 bg-slate-200 text-slate-900 hover:bg-slate-300 disabled:opacity-50 dark:bg-slate-700 dark:text-white dark:hover:bg-slate-600"
+                    >
+                      ← Prev
+                    </button>
+                    <span className="flex items-center px-3 py-2 text-slate-700 dark:text-slate-300">Page {page}</span>
+                    <button
+                      onClick={() => setPage(page + 1)}
+                      disabled={students.length < 10}
+                      className="rounded px-3 py-2 bg-slate-200 text-slate-900 hover:bg-slate-300 disabled:opacity-50 dark:bg-slate-700 dark:text-white dark:hover:bg-slate-600"
+                    >
+                      Next
+                    </button>
+                  </div>
+                </>
+              )}
+            </div>
+          </div>
+
+          {/* Student Details */}
+          <div className="lg:col-span-2 rounded-xl border border-slate-200 bg-white p-6 dark:border-slate-700 dark:bg-slate-900">
+            {selectedStudent ? (
+              <div className="space-y-6">
+                <div>
+                  <h2 className="mb-4 text-2xl font-bold text-slate-900 dark:text-white">
+                    {selectedStudent.first_name} {selectedStudent.last_name}
+                  </h2>
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="rounded-lg bg-slate-50 p-3 dark:bg-slate-800">
+                      <label className="text-sm font-medium text-slate-600 dark:text-slate-400">Email</label>
+                      <p className="mt-1 text-slate-900 dark:text-white">{selectedStudent.email}</p>
+                    </div>
+                    <div className="rounded-lg bg-slate-50 p-3 dark:bg-slate-800">
+                      <label className="text-sm font-medium text-slate-600 dark:text-slate-400">Phone</label>
+                      <p className="mt-1 text-slate-900 dark:text-white">{selectedStudent.phone}</p>
+                    </div>
+                    <div className="rounded-lg bg-slate-50 p-3 dark:bg-slate-800">
+                      <label className="text-sm font-medium text-slate-600 dark:text-slate-400">User ID</label>
+                      <p className="mt-1 text-slate-900 dark:text-white">{selectedStudent.user_id}</p>
+                    </div>
+                    <div className="rounded-lg bg-slate-50 p-3 dark:bg-slate-800">
+                      <label className="text-sm font-medium text-slate-600 dark:text-slate-400">Status</label>
+                      <p className="mt-1 text-slate-900 dark:text-white">{selectedStudent.status}</p>
+                    </div>
+                    <div className="col-span-2 rounded-lg bg-slate-50 p-3 dark:bg-slate-800">
+                      <label className="text-sm font-medium text-slate-600 dark:text-slate-400">Goal</label>
+                      <p className="mt-1 text-slate-900 dark:text-white">{selectedStudent.goal}</p>
+                    </div>
+                    <div className="col-span-2 rounded-lg bg-slate-50 p-3 dark:bg-slate-800">
+                      <label className="text-sm font-medium text-slate-600 dark:text-slate-400">Joined</label>
+                      <p className="mt-1 text-slate-900 dark:text-white">{new Date(selectedStudent.created_at).toLocaleDateString()}</p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Payment Info */}
+                {selectedStudent.payment && (
+                  <div className="rounded-lg border border-slate-200 bg-slate-50 p-4 dark:border-slate-700 dark:bg-slate-800">
+                    <h3 className="mb-4 text-xl font-bold text-slate-900 dark:text-white">Payment Information</h3>
+                    <div className="space-y-3">
+                      <div className="flex justify-between rounded bg-white p-2 dark:bg-slate-900">
+                        <span className="text-slate-700 dark:text-slate-300">Total Amount:</span>
+                        <span className="font-semibold text-slate-900 dark:text-white">₹{(selectedStudent.payment.total_amount_paise / 100).toFixed(2)}</span>
+                      </div>
+                      <div className="flex justify-between rounded bg-white p-2 dark:bg-slate-900">
+                        <span className="text-slate-700 dark:text-slate-300">Paid Amount:</span>
+                        <span className="font-semibold text-green-600 dark:text-green-400">₹{(selectedStudent.payment.paid_amount_paise / 100).toFixed(2)}</span>
+                      </div>
+                      <div className="flex justify-between rounded bg-white p-2 dark:bg-slate-900">
+                        <span className="text-slate-700 dark:text-slate-300">Pending:</span>
+                        <span className="font-semibold text-red-600 dark:text-red-400">₹{(selectedStudent.payment.pending_amount_paise / 100).toFixed(2)}</span>
+                      </div>
+                      <div className="flex justify-between rounded bg-white p-2 dark:bg-slate-900">
+                        <span className="text-slate-700 dark:text-slate-300">Completion:</span>
+                        <span className="font-semibold text-slate-900 dark:text-white">{selectedStudent.payment.percentage_paid}%</span>
+                      </div>
+                      <div className="mt-4 overflow-hidden rounded-full bg-slate-300 dark:bg-slate-700">
+                        <div
+                          className="h-2 bg-gradient-to-r from-green-500 to-blue-600"
+                          style={{ width: `${selectedStudent.payment.percentage_paid}%` }}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {/* Notifications */}
+                <div className="rounded-lg border border-slate-200 bg-slate-50 p-4 dark:border-slate-700 dark:bg-slate-800">
+                  <h3 className="mb-4 text-xl font-bold text-slate-900 dark:text-white">Send Notification</h3>
+                  <div className="space-y-3">
+                    <textarea
+                      id="notification-message"
+                      placeholder="Enter message..."
+                      className="w-full rounded border border-slate-300 bg-white px-4 py-2 text-slate-900 placeholder:text-slate-500 focus:border-blue-500 focus:outline-none dark:border-slate-600 dark:bg-slate-900 dark:text-white dark:placeholder:text-slate-400"
+                      rows={3}
+                    />
+                    <div className="flex gap-2">
+                      <button
+                        onClick={() => {
+                          const msg = (document.getElementById('notification-message') as HTMLTextAreaElement)?.value;
+                          if (msg) sendNotification('email', msg);
+                        }}
+                        className="flex-1 rounded bg-blue-600 px-4 py-2 font-medium text-white transition hover:bg-blue-700"
+                      >
+                        Send Email
+                      </button>
+                      <button
+                        onClick={() => {
+                          const msg = (document.getElementById('notification-message') as HTMLTextAreaElement)?.value;
+                          if (msg) sendNotification('sms', msg);
+                        }}
+                        className="flex-1 rounded bg-green-600 px-4 py-2 font-medium text-white transition hover:bg-green-700"
+                      >
+                        Send SMS
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ) : (
+              <div className="flex h-full items-center justify-center">
+                <p className="text-lg text-slate-500 dark:text-slate-400">Select a student to view details</p>
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}

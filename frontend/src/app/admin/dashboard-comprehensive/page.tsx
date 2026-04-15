@@ -33,6 +33,7 @@ export default function AdminPortal() {
   const [stats, setStats] = useState<AdminStats | null>(null);
   const [students, setStudents] = useState<Student[]>([]);
   const [searchFilter, setSearchFilter] = useState('');
+
   useEffect(() => {
     checkAuthAndLoad();
   }, []);

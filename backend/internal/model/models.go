@@ -238,3 +238,23 @@ type StudentCourseProgress struct {
 	CreatedAt         time.Time `json:"created_at"`
 	UpdatedAt         time.Time `json:"updated_at"`
 }
+
+// Certificate represents a course completion certificate
+type Certificate struct {
+	ID                int64      `json:"id"`
+	StudentID         int64      `json:"student_id"`
+	CourseID          int64      `json:"course_id"`
+	Title             string     `json:"title"`
+	IssuedDate        time.Time  `json:"issued_date"`
+	CompletionDate    *time.Time `json:"completion_date,omitempty"`
+	ClassesAttended   int        `json:"classes_attended"`
+	TotalClasses      int        `json:"total_classes"`
+	Score             float64    `json:"score"`
+	TopicsLearned     []string   `json:"topics_learned"`
+	CertificateNumber string     `json:"certificate_number"`
+	CertificateURL    *string    `json:"certificate_url,omitempty"`
+	Status            string     `json:"status"` // pending, approved, issued
+	VerifiedBy        *int64     `json:"verified_by,omitempty"`
+	CreatedAt         time.Time  `json:"created_at"`
+	UpdatedAt         time.Time  `json:"updated_at"`
+}
