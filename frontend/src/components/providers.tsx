@@ -5,6 +5,7 @@ import type { ReactNode } from "react";
 import { ScrollToHash } from "@/components/scroll-to-hash";
 import { LanguageProvider } from "@/contexts/language-context";
 import { StudentProvider } from "@/contexts/StudentContext";
+import { ProtectedRoute } from "@/components/protected-route";
 
 export function Providers({ children }: { children: ReactNode }) {
   return (
@@ -12,7 +13,7 @@ export function Providers({ children }: { children: ReactNode }) {
       <LanguageProvider>
         <StudentProvider>
           <ScrollToHash />
-          {children}
+          <ProtectedRoute>{children}</ProtectedRoute>
         </StudentProvider>
       </LanguageProvider>
     </ThemeProvider>

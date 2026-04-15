@@ -88,6 +88,7 @@ export const messages = {
       { title: "Full founder story", desc: "Full journey — loss, responsibility, growth." },
       { title: "Podcast", desc: "Fix Your Finance — real story." },
       { title: "Program", desc: "Mentorship format — free versus paid; fees stay on Investment." },
+      { title: "Why custom development?", desc: "Pre-built tools vs. custom code — understand the difference and why it matters for your career." },
       { title: "Content & courses", desc: "What we teach: Go, AI, interviews — videos and docs (coming soon)." },
       { title: "Connect", desc: "WhatsApp, social, book a call — reach Gopher Lab directly." },
       { title: "Proof", desc: "Transparency and evidence wall." },
