@@ -127,7 +127,7 @@ func MigratePostgres(ctx context.Context, db *sql.DB) error {
 		// Seed test admin (bcrypt cost 10 for "TestAdmin@2024"). For testing purposes.
 		`INSERT INTO admin_users (email, password_hash) VALUES (
 			'testadmin@gopher.lab',
-			E'$2a$10$/FE1Ld392dix2Wi2JikJIOc.DG5xshjne.VZFe15ovLbdWuKOiAka'
+			E'$2a$10$l8F9QQjdr/oh9NEzH6mrtOr3ubtrJxcUJP7LSR6fBLYcRtcmEwoYi'
 		) ON CONFLICT (email) DO NOTHING;`,
 
 		// === STUDENT LEARNING SYSTEM ===
@@ -157,7 +157,7 @@ func MigratePostgres(ctx context.Context, db *sql.DB) error {
 			'+919876543210',
 			'+919876543210',
 			'teststudent',
-			E'$2a$10$/FE1Ld392dix2Wi2JikJIOc.DG5xshjne.VZFe15ovLbdWuKOiAka',
+			E'$2a$10$krXFVHhnIdJvrVOEA6iy..2T65nwRHYLvnxkP7BdDYHPKuf3FQTPm',
 			'Learn Go and systems thinking',
 			'active'
 		) ON CONFLICT (email) DO NOTHING;`,
