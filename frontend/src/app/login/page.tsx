@@ -1,11 +1,12 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { GlassCard } from '@/components/glass-card';
 import { SiteHeader } from '@/components/site-header';
 import { useStudent } from '@/contexts/StudentContext';
+import { Toast, useNotification } from '@/components/toast';
 
 interface LoginForm {
   user_id_or_email: string;
@@ -16,7 +17,9 @@ type LoginMode = 'student' | 'admin';
 
 export default function LoginPage() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const { isAuthenticated, login } = useStudent();
+  const { notification, showNotification } = useNotification();
   const [loginMode, setLoginMode] = useState<LoginMode>('student');
   const [form, setForm] = useState<LoginForm>({
     user_id_or_email: '',
@@ -24,6 +27,13 @@ export default function LoginPage() {
   });
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    // Check if session expired
+    if (searchParams.get('session') === 'expired') {
+      showNotification('Your session has expired. Please log in again.', 'warning', 5000);
+    }
+  }, [searchParams, showNotification]);
 
   useEffect(() => {
     if (isAuthenticated) {
@@ -69,7 +79,10 @@ export default function LoginPage() {
           last_name: data.last_name || '',
         });
 
-        router.push('/learning');
+        showNotification(`Welcome back, ${data.first_name}! You are now in the Student Portal.`, 'success', 3000);
+        setTimeout(() => {
+          router.push('/learning');
+        }, 1000);
       } else {
         // Admin login
         const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/auth/login`, {
@@ -90,11 +103,16 @@ export default function LoginPage() {
         // Store admin token in localStorage
         if (data.token) {
           localStorage.setItem('adminToken', data.token);
-          router.push('/admin/dashboard');
+          showNotification('Successfully logged into Admin Portal!', 'success', 3000);
+          setTimeout(() => {
+            router.push('/admin/dashboard');
+          }, 1000);
         }
       }
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'An error occurred');
+      const message = err instanceof Error ? err.message : 'An error occurred';
+      setError(message);
+      showNotification(message, 'error', 4000);
     } finally {
       setLoading(false);
     }
@@ -102,6 +120,14 @@ export default function LoginPage() {
 
   return (
     <div className="noise min-h-screen bg-background bg-hero-radial dark:bg-hero-radial-dark">
+      {notification && (
+        <Toast
+          message={notification.message}
+          type={notification.type}
+          duration={notification.duration}
+          onClose={() => {}}
+        />
+      )}
       <SiteHeader />
       <main className="page-shell py-16 sm:py-24">
         <div className="mx-auto max-w-md">

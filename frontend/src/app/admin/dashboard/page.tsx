@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useStudent } from '@/contexts/StudentContext';
+import { useSessionTimeout } from '@/hooks/useSessionTimeout';
 import { SiteHeader } from '@/components/site-header';
 
 interface Student {
@@ -37,6 +38,8 @@ export default function AdminDashboard() {
   const [page, setPage] = useState(1);
   const [total, setTotal] = useState(0);
   const [adminToken, setAdminToken] = useState<string | null>(null);
+
+  useSessionTimeout(); // Enable 1-hour session timeout
 
   useEffect(() => {
     // Check for admin authentication (stored in localStorage after admin login)
@@ -117,6 +120,15 @@ export default function AdminDashboard() {
         <div className="mb-8">
           <h1 className="text-4xl font-bold text-slate-900 dark:text-white">Admin Dashboard</h1>
           <p className="mt-2 text-slate-600 dark:text-slate-400">Manage students, payments, and send notifications</p>
+          
+          {/* Portal Badge */}
+          <div className="mt-4 inline-block">
+            <div className="px-4 py-2 bg-purple-500/20 border border-purple-500/50 rounded-full">
+              <p className="text-purple-700 dark:text-purple-200 text-sm font-medium">
+                ✓ You are in the <span className="font-semibold">Admin Portal</span>
+              </p>
+            </div>
+          </div>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">

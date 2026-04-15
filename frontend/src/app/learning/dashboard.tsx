@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { GlassCard } from '@/components/glass-card';
 import { SiteHeader } from '@/components/site-header';
 import { useStudent } from '@/contexts/StudentContext';
+import { useSessionTimeout } from '@/hooks/useSessionTimeout';
 
 interface Course {
   id: number;
@@ -34,6 +35,7 @@ interface Session {
 export default function LearningPage() {
   const router = useRouter();
   const { isAuthenticated, student } = useStudent();
+  useSessionTimeout(); // Enable 1-hour session timeout
   const [courses, setCourses] = useState<Course[]>([]);
   const [selectedCourse, setSelectedCourse] = useState<Course | null>(null);
   const [modules, setModules] = useState<Module[]>([]);
@@ -135,6 +137,15 @@ export default function LearningPage() {
               Welcome back, {student?.first_name}! 👋
             </h1>
             <p className="text-gray-300">Continue your journey to become a Go developer</p>
+          </div>
+
+          {/* Portal Badge */}
+          <div className="mb-6 inline-block">
+            <div className="px-4 py-2 bg-blue-500/20 border border-blue-500/50 rounded-full">
+              <p className="text-blue-200 text-sm font-medium">
+                ✓ You are in the <span className="font-semibold">Student Portal</span>
+              </p>
+            </div>
           </div>
 
           {error && (
