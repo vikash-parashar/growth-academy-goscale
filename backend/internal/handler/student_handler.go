@@ -105,6 +105,24 @@ func (h *StudentHandler) Login(c *gin.Context) {
 		return
 	}
 
+	// Test student hardcoded credentials (for development/testing)
+	// TODO: Remove these test credentials once database student seeding works properly
+	if (req.UserIDOrEmail == "teststudent" || req.UserIDOrEmail == "teststudent@gopher.lab") && req.Password == "TestStudent@2024" {
+		testToken, err := auth.IssueStudentToken(h.cfg.JWTSecret, 999, "teststudent@gopher.lab", "teststudent", 24*time.Hour)
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "failed to generate token"})
+			return
+		}
+		c.JSON(http.StatusOK, LoginResponse{
+			ID:        999,
+			Email:     "teststudent@gopher.lab",
+			UserID:    "teststudent",
+			FirstName: "Test",
+			Token:     testToken,
+		})
+		return
+	}
+
 	ctx := c.Request.Context()
 	var student *model.Student
 	var err error

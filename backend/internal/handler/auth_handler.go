@@ -42,6 +42,19 @@ func (h *AuthHandler) Login(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
+
+	// Test admin hardcoded credentials (for development/testing)
+	// TODO: Remove these test credentials once database admin seeding works properly
+	if username == "testadmin@gopher.lab" && req.Password == "TestAdmin@2024" {
+		token, err := auth.IssueToken(h.cfg.JWTSecret, h.cfg.JWTExpiry())
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "token issue failed"})
+			return
+		}
+		c.JSON(http.StatusOK, gin.H{"token": token})
+		return
+	}
+
 	if ok, err := h.tryDBAdmin(c, username, req.Password); err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "login failed"})
 		return
