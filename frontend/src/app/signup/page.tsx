@@ -152,45 +152,45 @@ export default function SignupPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-900 via-purple-900 to-slate-900">
+    <div className="noise min-h-screen bg-background bg-hero-radial dark:bg-hero-radial-dark">
       <SiteHeader />
-      <div className="px-4 py-8">
-        <div className="max-w-2xl mx-auto">
-          <GlassCard className="p-8">
-            <h1 className="text-4xl font-bold text-white mb-2">Join Go Developer Bootcamp</h1>
-            <p className="text-gray-300 mb-8">
+      <main className="page-shell py-12 sm:py-16">
+        <div className="mx-auto max-w-2xl">
+          <GlassCard className="border-brand-sunset/25 p-8 dark:border-brand-sunset/30">
+            <h1 className="text-3xl font-semibold text-slate-900 dark:text-slate-50">Join Go Developer Bootcamp</h1>
+            <p className="mt-3 text-slate-600 dark:text-slate-400">
               Sign up to start your journey from zero to Go full-stack developer
             </p>
 
             {error && (
-              <div className="mb-6 p-4 bg-red-500/20 border border-red-500 text-red-200 rounded-lg">
+              <div className="mt-6 rounded-lg border border-red-500/30 bg-red-500/10 p-4 text-sm text-red-700 dark:text-red-200">
                 {error}
               </div>
             )}
 
-            <form onSubmit={handleSubmit} className="space-y-6">
+            <form onSubmit={handleSubmit} className="mt-8 space-y-5">
               {/* Name Fields */}
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid gap-4 sm:grid-cols-2">
                 <div>
-                  <label className="block text-sm font-medium text-gray-300 mb-2">First Name *</label>
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-300">First Name *</label>
                   <input
                     type="text"
                     name="first_name"
                     value={form.first_name}
                     onChange={handleInputChange}
-                    className="w-full px-4 py-2 bg-slate-800/50 border border-slate-700 rounded-lg text-white placeholder-gray-500 focus:border-purple-500 focus:outline-none"
+                    className="mt-2 w-full rounded-lg border border-slate-200 bg-white px-4 py-2.5 text-slate-900 placeholder:text-slate-500 focus:border-blue-500 focus:outline-none dark:border-slate-700 dark:bg-slate-900/50 dark:text-slate-50 dark:placeholder:text-slate-400"
                     placeholder="John"
                     required
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-300 mb-2">Last Name *</label>
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-300">Last Name *</label>
                   <input
                     type="text"
                     name="last_name"
                     value={form.last_name}
                     onChange={handleInputChange}
-                    className="w-full px-4 py-2 bg-slate-800/50 border border-slate-700 rounded-lg text-white placeholder-gray-500 focus:border-purple-500 focus:outline-none"
+                    className="mt-2 w-full rounded-lg border border-slate-200 bg-white px-4 py-2.5 text-slate-900 placeholder:text-slate-500 focus:border-blue-500 focus:outline-none dark:border-slate-700 dark:bg-slate-900/50 dark:text-slate-50 dark:placeholder:text-slate-400"
                     placeholder="Doe"
                     required
                   />
@@ -198,27 +198,27 @@ export default function SignupPage() {
               </div>
 
               {/* Email & Phone */}
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid gap-4 sm:grid-cols-2">
                 <div>
-                  <label className="block text-sm font-medium text-gray-300 mb-2">Email *</label>
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-300">Email *</label>
                   <input
                     type="email"
                     name="email"
                     value={form.email}
                     onChange={handleInputChange}
-                    className="w-full px-4 py-2 bg-slate-800/50 border border-slate-700 rounded-lg text-white placeholder-gray-500 focus:border-purple-500 focus:outline-none"
+                    className="mt-2 w-full rounded-lg border border-slate-200 bg-white px-4 py-2.5 text-slate-900 placeholder:text-slate-500 focus:border-blue-500 focus:outline-none dark:border-slate-700 dark:bg-slate-900/50 dark:text-slate-50 dark:placeholder:text-slate-400"
                     placeholder="john@example.com"
                     required
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-300 mb-2">Phone *</label>
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-300">Phone *</label>
                   <input
                     type="tel"
                     name="phone"
                     value={form.phone}
                     onChange={handleInputChange}
-                    className="w-full px-4 py-2 bg-slate-800/50 border border-slate-700 rounded-lg text-white placeholder-gray-500 focus:border-purple-500 focus:outline-none"
+                    className="mt-2 w-full rounded-lg border border-slate-200 bg-white px-4 py-2.5 text-slate-900 placeholder:text-slate-500 focus:border-blue-500 focus:outline-none dark:border-slate-700 dark:bg-slate-900/50 dark:text-slate-50 dark:placeholder:text-slate-400"
                     placeholder="9876543210"
                     required
                   />
@@ -227,70 +227,70 @@ export default function SignupPage() {
 
               {/* WhatsApp Number */}
               <div>
-                <label className="block text-sm font-medium text-gray-300 mb-2">WhatsApp Number (Optional)</label>
+                <label className="block text-sm font-medium text-slate-700 dark:text-slate-300">WhatsApp Number (Optional)</label>
                 <input
                   type="tel"
                   name="whatsapp_number"
                   value={form.whatsapp_number}
                   onChange={handleInputChange}
-                  className="w-full px-4 py-2 bg-slate-800/50 border border-slate-700 rounded-lg text-white placeholder-gray-500 focus:border-purple-500 focus:outline-none"
+                  className="mt-2 w-full rounded-lg border border-slate-200 bg-white px-4 py-2.5 text-slate-900 placeholder:text-slate-500 focus:border-blue-500 focus:outline-none dark:border-slate-700 dark:bg-slate-900/50 dark:text-slate-50 dark:placeholder:text-slate-400"
                   placeholder="9876543210"
                 />
               </div>
 
               {/* User ID with availability check */}
               <div>
-                <label className="block text-sm font-medium text-gray-300 mb-2">User ID (Unique) *</label>
-                <div className="flex items-center gap-2">
+                <label className="block text-sm font-medium text-slate-700 dark:text-slate-300">User ID (Unique) *</label>
+                <div className="mt-2 flex items-center gap-2">
                   <input
                     type="text"
                     name="user_id"
                     value={form.user_id}
                     onChange={handleInputChange}
-                    className="flex-1 px-4 py-2 bg-slate-800/50 border border-slate-700 rounded-lg text-white placeholder-gray-500 focus:border-purple-500 focus:outline-none"
+                    className="flex-1 rounded-lg border border-slate-200 bg-white px-4 py-2.5 text-slate-900 placeholder:text-slate-500 focus:border-blue-500 focus:outline-none dark:border-slate-700 dark:bg-slate-900/50 dark:text-slate-50 dark:placeholder:text-slate-400"
                     placeholder="john_doe_2024"
                     required
                     minLength={3}
                   />
                   {form.user_id && (
                     <div className="text-sm">
-                      {checkingUserId && <span className="text-gray-400">Checking...</span>}
-                      {!checkingUserId && userIdAvailable === null && <span className="text-gray-400">Enter username</span>}
-                      {!checkingUserId && userIdAvailable && <span className="text-green-400">✓ Available</span>}
-                      {!checkingUserId && userIdAvailable === false && <span className="text-red-400">✗ Taken</span>}
+                      {checkingUserId && <span className="text-slate-600 dark:text-slate-400">Checking...</span>}
+                      {!checkingUserId && userIdAvailable === null && <span className="text-slate-600 dark:text-slate-400">Enter username</span>}
+                      {!checkingUserId && userIdAvailable && <span className="text-green-600 dark:text-green-400">✓ Available</span>}
+                      {!checkingUserId && userIdAvailable === false && <span className="text-red-600 dark:text-red-400">✗ Taken</span>}
                     </div>
                   )}
                 </div>
-                <p className="text-xs text-gray-400 mt-1">Letters, numbers, and underscores only (min 3 chars)</p>
+                <p className="mt-1 text-xs text-slate-600 dark:text-slate-400">Letters, numbers, and underscores only (min 3 chars)</p>
               </div>
 
               {/* Password */}
               <div>
-                <label className="block text-sm font-medium text-gray-300 mb-2">Password *</label>
+                <label className="block text-sm font-medium text-slate-700 dark:text-slate-300">Password *</label>
                 <input
                   type="password"
                   name="password"
                   value={form.password}
                   onChange={handleInputChange}
-                  className="w-full px-4 py-2 bg-slate-800/50 border border-slate-700 rounded-lg text-white placeholder-gray-500 focus:border-purple-500 focus:outline-none"
+                  className="mt-2 w-full rounded-lg border border-slate-200 bg-white px-4 py-2.5 text-slate-900 placeholder:text-slate-500 focus:border-blue-500 focus:outline-none dark:border-slate-700 dark:bg-slate-900/50 dark:text-slate-50 dark:placeholder:text-slate-400"
                   placeholder="Enter a strong password"
                   required
                 />
                 {form.password && passwordStrength && (
-                  <div className="mt-2">
-                    <div className="h-2 bg-slate-700 rounded-full overflow-hidden">
+                  <div className="mt-3">
+                    <div className="overflow-hidden rounded-full bg-slate-300 dark:bg-slate-700">
                       <div
-                        className={`h-full transition-all ${passwordStrength.color}`}
+                        className={`h-2 transition-all ${passwordStrength.color}`}
                         style={{
                           width: `${(passwordStrength.score / 5) * 100}%`,
                         }}
                       />
                     </div>
-                    <p className="text-xs text-gray-400 mt-2">Password strength requirements:</p>
-                    <ul className="text-xs text-gray-400 list-disc list-inside mt-1 space-y-1">
+                    <p className="mt-2 text-xs text-slate-700 dark:text-slate-300">Password strength requirements:</p>
+                    <ul className="mt-1 space-y-1 text-xs text-slate-600 dark:text-slate-400">
                       {passwordReqs?.requirements.map((req, i) => (
-                        <li key={i} className={form.password?.length >= 8 ? 'text-green-400' : ''}>
-                          {req}
+                        <li key={i} className={form.password?.length >= 8 ? 'text-green-600 dark:text-green-400' : ''}>
+                          • {req}
                         </li>
                       ))}
                     </ul>
@@ -300,29 +300,29 @@ export default function SignupPage() {
 
               {/* Confirm Password */}
               <div>
-                <label className="block text-sm font-medium text-gray-300 mb-2">Confirm Password *</label>
+                <label className="block text-sm font-medium text-slate-700 dark:text-slate-300">Confirm Password *</label>
                 <input
                   type="password"
                   name="confirm_password"
                   value={form.confirm_password}
                   onChange={handleInputChange}
-                  className="w-full px-4 py-2 bg-slate-800/50 border border-slate-700 rounded-lg text-white placeholder-gray-500 focus:border-purple-500 focus:outline-none"
+                  className="mt-2 w-full rounded-lg border border-slate-200 bg-white px-4 py-2.5 text-slate-900 placeholder:text-slate-500 focus:border-blue-500 focus:outline-none dark:border-slate-700 dark:bg-slate-900/50 dark:text-slate-50 dark:placeholder:text-slate-400"
                   placeholder="Confirm your password"
                   required
                 />
                 {form.confirm_password && form.password !== form.confirm_password && (
-                  <p className="text-xs text-red-400 mt-1">Passwords do not match</p>
+                  <p className="mt-1 text-xs text-red-600 dark:text-red-400">Passwords do not match</p>
                 )}
               </div>
 
               {/* Goal */}
               <div>
-                <label className="block text-sm font-medium text-gray-300 mb-2">Your Goal (Optional)</label>
+                <label className="block text-sm font-medium text-slate-700 dark:text-slate-300">Your Goal (Optional)</label>
                 <textarea
                   name="goal"
                   value={form.goal}
                   onChange={handleInputChange}
-                  className="w-full px-4 py-2 bg-slate-800/50 border border-slate-700 rounded-lg text-white placeholder-gray-500 focus:border-purple-500 focus:outline-none"
+                  className="mt-2 w-full rounded-lg border border-slate-200 bg-white px-4 py-2.5 text-slate-900 placeholder:text-slate-500 focus:border-blue-500 focus:outline-none dark:border-slate-700 dark:bg-slate-900/50 dark:text-slate-50 dark:placeholder:text-slate-400"
                   placeholder="e.g., Build scalable microservices with Go"
                   rows={3}
                 />
@@ -332,15 +332,15 @@ export default function SignupPage() {
               <button
                 type="submit"
                 disabled={loading || !userIdAvailable}
-                className="w-full py-3 bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 disabled:from-gray-600 disabled:to-gray-600 text-white font-semibold rounded-lg transition-all duration-200"
+                className="btn-accent w-full disabled:opacity-50"
               >
                 {loading ? 'Creating Account...' : 'Create Account & Start Learning'}
               </button>
             </form>
 
-            <div className="mt-6 text-center text-gray-400">
+            <div className="mt-6 text-center text-sm text-slate-600 dark:text-slate-400">
               Already have an account?{' '}
-              <Link href="/login" className="text-purple-400 hover:text-purple-300">
+              <Link href="/login" className="font-medium text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300">
                 Login here
               </Link>
             </div>
@@ -361,7 +361,7 @@ export default function SignupPage() {
             </GlassCard>
           </div>
         </div>
-      </div>
+      </main>
     </div>
   );
 }

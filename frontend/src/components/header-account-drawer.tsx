@@ -5,8 +5,10 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { useTheme } from "next-themes";
+import { useRouter } from "next/navigation";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { useLanguage } from "@/contexts/language-context";
+import { useStudent } from "@/contexts/StudentContext";
 
 function CloseIcon({ className }: { className?: string }) {
   return (
@@ -17,11 +19,13 @@ function CloseIcon({ className }: { className?: string }) {
 }
 
 /**
- * Profile-style control on the header: opens a right-edge sheet with theme + admin portal.
+ * Profile-style control on the header: opens a right-edge sheet with theme + account options.
  */
 export function HeaderAccountDrawer() {
   const { t } = useLanguage();
   const { resolvedTheme } = useTheme();
+  const router = useRouter();
+  const { isAuthenticated, student, logout } = useStudent();
   const [open, setOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
 
@@ -125,20 +129,71 @@ export function HeaderAccountDrawer() {
                     </div>
                   </section>
 
-                  <section>
-                    <p className="text-[0.65rem] font-bold uppercase tracking-[0.16em] text-[#fec7b4]/90">
-                      {t.header.adminPortalNav}
-                    </p>
-                    <p className="mt-1 text-xs text-[#d2c1b6]/85">{t.header.adminPortalNavHint}</p>
-                    <Link
-                      href="/admin"
-                      onClick={() => setOpen(false)}
-                      className="btn-accent-sm mt-4 flex w-full items-center justify-center gap-2 text-center"
-                    >
-                      <ShieldIcon className="h-4 w-4" />
-                      {t.header.adminPortalNav}
-                    </Link>
-                  </section>
+                  {isAuthenticated && student ? (
+                    <>
+                      <section>
+                        <p className="text-[0.65rem] font-bold uppercase tracking-[0.16em] text-[#fec7b4]/90">
+                          {t.header.accountPanelTitle}
+                        </p>
+                        <div className="mt-3 rounded-xl border border-[#456882]/40 bg-[#234c6a]/35 px-4 py-3">
+                          <p className="text-sm font-medium text-[#f4eee6]">
+                            {student.first_name} {student.last_name}
+                          </p>
+                          <p className="text-xs text-[#d2c1b6]/85 truncate">{student.email}</p>
+                          <p className="text-xs text-[#d2c1b6]/75 mt-1">ID: {student.user_id}</p>
+                        </div>
+                      </section>
+
+                      <section>
+                        <p className="text-[0.65rem] font-bold uppercase tracking-[0.16em] text-[#fec7b4]/90">
+                          {t.header.adminPortalNav}
+                        </p>
+                        <p className="mt-1 text-xs text-[#d2c1b6]/85">{t.header.adminPortalNavHint}</p>
+                        <Link
+                          href="/admin"
+                          onClick={() => setOpen(false)}
+                          className="btn-accent-sm mt-4 flex w-full items-center justify-center gap-2 text-center"
+                        >
+                          <ShieldIcon className="h-4 w-4" />
+                          {t.header.adminPortalNav}
+                        </Link>
+                      </section>
+
+                      <button
+                        onClick={() => {
+                          logout();
+                          setOpen(false);
+                          router.push('/');
+                        }}
+                        className="mt-auto rounded-lg bg-red-600/20 px-4 py-2 text-sm font-medium text-red-200 transition hover:bg-red-600/30"
+                      >
+                        Logout
+                      </button>
+                    </>
+                  ) : (
+                    <section>
+                      <p className="text-[0.65rem] font-bold uppercase tracking-[0.16em] text-[#fec7b4]/90">
+                        Get Started
+                      </p>
+                      <p className="mt-1 text-xs text-[#d2c1b6]/85">Join our bootcamp to access courses, mentorship, and career support</p>
+                      <div className="mt-4 space-y-2">
+                        <Link
+                          href="/signup"
+                          onClick={() => setOpen(false)}
+                          className="btn-accent-sm flex w-full items-center justify-center"
+                        >
+                          Sign Up
+                        </Link>
+                        <Link
+                          href="/login"
+                          onClick={() => setOpen(false)}
+                          className="flex w-full items-center justify-center rounded-lg bg-[#456882]/35 px-4 py-2 text-sm font-medium text-[#f4eee6] transition hover:bg-[#456882]/50 dark:bg-[#234c6a]/50 dark:hover:bg-[#456882]/40"
+                        >
+                          Login
+                        </Link>
+                      </div>
+                    </section>
+                  )}
                 </div>
               </aside>
             </>,

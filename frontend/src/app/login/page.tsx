@@ -71,23 +71,23 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-900 via-purple-900 to-slate-900">
+    <div className="noise min-h-screen bg-background bg-hero-radial dark:bg-hero-radial-dark">
       <SiteHeader />
-      <div className="px-4 py-20">
-        <div className="max-w-md mx-auto">
-          <GlassCard className="p-8">
-            <h1 className="text-3xl font-bold text-white mb-2">Welcome Back</h1>
-            <p className="text-gray-300 mb-8">Login to continue your Go learning journey</p>
+      <main className="page-shell py-16 sm:py-24">
+        <div className="mx-auto max-w-md">
+          <GlassCard className="border-brand-sunset/25 p-8 dark:border-brand-sunset/30">
+            <h1 className="text-3xl font-semibold text-slate-900 dark:text-slate-50">Welcome Back</h1>
+            <p className="mt-2 text-slate-600 dark:text-slate-400">Login to continue your Go learning journey</p>
 
             {error && (
-              <div className="mb-6 p-4 bg-red-500/20 border border-red-500 text-red-200 rounded-lg">
+              <div className="mt-6 rounded-lg border border-red-500/30 bg-red-500/10 p-4 text-sm text-red-700 dark:text-red-200">
                 {error}
               </div>
             )}
 
-            <form onSubmit={handleSubmit} className="space-y-6">
+            <form onSubmit={handleSubmit} className="mt-8 space-y-5">
               <div>
-                <label className="block text-sm font-medium text-gray-300 mb-2">
+                <label className="block text-sm font-medium text-slate-700 dark:text-slate-300">
                   User ID or Email
                 </label>
                 <input
@@ -95,20 +95,20 @@ export default function LoginPage() {
                   name="user_id_or_email"
                   value={form.user_id_or_email}
                   onChange={handleInputChange}
-                  className="w-full px-4 py-2 bg-slate-800/50 border border-slate-700 rounded-lg text-white placeholder-gray-500 focus:border-purple-500 focus:outline-none"
+                  className="mt-2 w-full rounded-lg border border-slate-200 bg-white px-4 py-2.5 text-slate-900 placeholder:text-slate-500 focus:border-blue-500 focus:outline-none dark:border-slate-700 dark:bg-slate-900/50 dark:text-slate-50 dark:placeholder:text-slate-400"
                   placeholder="john_doe or john@example.com"
                   required
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-300 mb-2">Password</label>
+                <label className="block text-sm font-medium text-slate-700 dark:text-slate-300">Password</label>
                 <input
                   type="password"
                   name="password"
                   value={form.password}
                   onChange={handleInputChange}
-                  className="w-full px-4 py-2 bg-slate-800/50 border border-slate-700 rounded-lg text-white placeholder-gray-500 focus:border-purple-500 focus:outline-none"
+                  className="mt-2 w-full rounded-lg border border-slate-200 bg-white px-4 py-2.5 text-slate-900 placeholder:text-slate-500 focus:border-blue-500 focus:outline-none dark:border-slate-700 dark:bg-slate-900/50 dark:text-slate-50 dark:placeholder:text-slate-400"
                   placeholder="••••••••"
                   required
                 />
@@ -117,21 +117,21 @@ export default function LoginPage() {
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full py-3 bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 disabled:from-gray-600 disabled:to-gray-600 text-white font-semibold rounded-lg transition-all duration-200"
+                className="btn-accent w-full disabled:opacity-50"
               >
                 {loading ? 'Logging in...' : 'Login'}
               </button>
             </form>
 
-            <div className="mt-6 text-center text-gray-400">
+            <div className="mt-6 text-center text-sm text-slate-600 dark:text-slate-400">
               Don&apos;t have an account?{' '}
-              <Link href="/signup" className="text-purple-400 hover:text-purple-300">
+              <Link href="/signup" className="font-medium text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300">
                 Sign up now
               </Link>
             </div>
           </GlassCard>
         </div>
-      </div>
+      </main>
     </div>
   );
 }

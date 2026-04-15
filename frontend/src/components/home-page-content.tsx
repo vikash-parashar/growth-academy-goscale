@@ -82,6 +82,51 @@ export function HomePageContent({ whatsappDigits }: HomePageContentProps) {
         </section>
 
         <section className="page-shell border-t border-slate-200/90 pb-24 pt-16 dark:border-white/10">
+          <div className="mx-auto max-w-3xl rounded-2xl border border-brand-sunset/25 bg-gradient-to-br from-brand-sunset/5 to-brand-berry/5 p-8 dark:border-brand-sunset/30 dark:from-brand-sunsetBright/5 dark:to-brand-berry/5 sm:p-12">
+            <h2 className="text-2xl font-semibold text-slate-900 dark:text-slate-50 sm:text-3xl">What You Get With Signup</h2>
+            <p className="mt-4 text-slate-600 dark:text-slate-400">
+              Join hundreds of developers building real systems and landing competitive offers.
+            </p>
+            <ul className="mt-8 grid gap-4 sm:grid-cols-2">
+              <li className="flex items-start gap-3">
+                <span className="mt-1 inline-flex h-6 w-6 items-center justify-center rounded-full bg-brand-sunset/20 text-sm font-semibold text-brand-sunset dark:bg-brand-onDark/20 dark:text-brand-onDark">✓</span>
+                <div>
+                  <p className="font-medium text-slate-900 dark:text-slate-50">Live Mentorship</p>
+                  <p className="text-sm text-slate-600 dark:text-slate-400">Weekly accountability sprints with founder</p>
+                </div>
+              </li>
+              <li className="flex items-start gap-3">
+                <span className="mt-1 inline-flex h-6 w-6 items-center justify-center rounded-full bg-brand-sunset/20 text-sm font-semibold text-brand-sunset dark:bg-brand-onDark/20 dark:text-brand-onDark">✓</span>
+                <div>
+                  <p className="font-medium text-slate-900 dark:text-slate-50">Interview Prep</p>
+                  <p className="text-sm text-slate-600 dark:text-slate-400">Real-world mock interviews and feedback</p>
+                </div>
+              </li>
+              <li className="flex items-start gap-3">
+                <span className="mt-1 inline-flex h-6 w-6 items-center justify-center rounded-full bg-brand-sunset/20 text-sm font-semibold text-brand-sunset dark:bg-brand-onDark/20 dark:text-brand-onDark">✓</span>
+                <div>
+                  <p className="font-medium text-slate-900 dark:text-slate-50">Job Market Access</p>
+                  <p className="text-sm text-slate-600 dark:text-slate-400">Curated Go & AI roles from public APIs</p>
+                </div>
+              </li>
+              <li className="flex items-start gap-3">
+                <span className="mt-1 inline-flex h-6 w-6 items-center justify-center rounded-full bg-brand-sunset/20 text-sm font-semibold text-brand-sunset dark:bg-brand-onDark/20 dark:text-brand-onDark">✓</span>
+                <div>
+                  <p className="font-medium text-slate-900 dark:text-slate-50">Learning Resources</p>
+                  <p className="text-sm text-slate-600 dark:text-slate-400">Custom Go bootcamp curriculum & docs</p>
+                </div>
+              </li>
+            </ul>
+            <div className="mt-10 flex flex-col gap-3 sm:flex-row sm:items-center">
+              <Link href="/signup" className="btn-accent px-8 py-3 text-center text-sm font-medium">
+                Start Your Journey Free
+              </Link>
+              <p className="text-xs text-slate-600 dark:text-slate-400">No credit card needed. Complete eligibility form first.</p>
+            </div>
+          </div>
+        </section>
+
+        <section className="page-shell border-t border-slate-200/90 pb-24 pt-16 dark:border-white/10">
           <h2 className="text-xl font-semibold text-slate-900 dark:text-slate-50 sm:text-2xl">{t.home.exploreTitle}</h2>
           <p className="mt-2 max-w-2xl text-sm text-slate-600 dark:text-slate-400">
             {t.home.exploreBodyPrefix}{" "}
