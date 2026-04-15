@@ -1,0 +1,21 @@
+The URL https://your-backend-api-url.com is a placeholder - you need to replace it with an actual deployed backend.
+
+Here's what you need to do RIGHT NOW:
+Deploy Backend to Render (5 minutes)
+Go to https://render.com and sign up (free)
+
+Click "New +" → "Web Service"
+
+Connect GitHub:
+
+Click "Connect GitHub Account"
+Select vikash-parashar/growth-academy-goscale
+Fill in the form:
+
+Name: growth-academy-api
+Root Directory: backend
+Runtime: Go
+Build Command: go build -o server ./cmd/server
+Start Command: ./server
+Instance Type: Free (Starter)
+Add Environment Variables (In the "Environment Variables" section):

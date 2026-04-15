@@ -36,9 +36,14 @@ export default function AdminDashboard() {
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(1);
   const [total, setTotal] = useState(0);
+  const [adminToken, setAdminToken] = useState<string | null>(null);
 
   useEffect(() => {
-    if (!isAuthenticated) {
+    // Check for admin authentication (stored in localStorage after admin login)
+    const storedAdminToken = typeof window !== 'undefined' ? localStorage.getItem('adminToken') : null;
+    setAdminToken(storedAdminToken);
+    
+    if (!storedAdminToken && !isAuthenticated) {
       router.push('/login');
       return;
     }
@@ -46,8 +51,9 @@ export default function AdminDashboard() {
     const loadStudents = async () => {
       try {
         setLoading(true);
+        const authToken = storedAdminToken || token;
         const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/admin/students?page=${page}`, {
-          headers: { Authorization: `Bearer ${token}` },
+          headers: { Authorization: `Bearer ${authToken}` },
         });
         if (!res.ok) throw new Error('Failed to load students');
         const data = await res.json();
@@ -61,12 +67,13 @@ export default function AdminDashboard() {
     };
 
     loadStudents();
-  }, [isAuthenticated, page, router, token]);
+  }, [isAuthenticated, page, router, token, adminToken]);
 
   const loadStudentDetail = async (studentId: number) => {
     try {
+      const authToken = adminToken || token;
       const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/admin/students/${studentId}`, {
-        headers: { Authorization: `Bearer ${token}` },
+        headers: { Authorization: `Bearer ${authToken}` },
       });
       if (!res.ok) throw new Error('Failed to load student detail');
       const data = await res.json();
@@ -79,13 +86,14 @@ export default function AdminDashboard() {
   const sendNotification = async (type: 'email' | 'sms', message: string) => {
     if (!selectedStudent) return;
     try {
+      const authToken = adminToken || token;
       const res = await fetch(
         `${process.env.NEXT_PUBLIC_API_URL}/api/admin/students/${selectedStudent.id}/notify`,
         {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}`,
+            Authorization: `Bearer ${authToken}`,
           },
           body: JSON.stringify({
             type,
