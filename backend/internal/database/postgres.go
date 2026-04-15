@@ -124,6 +124,12 @@ func MigratePostgres(ctx context.Context, db *sql.DB) error {
 			'$2a$10$FZbQRC6A8m6ys/6Qo2qQ2uNLn5ehAvV1XsQ8jWYTuaFCFRGtvlgSW'
 		) ON CONFLICT (email) DO NOTHING;`,
 
+		// Seed test admin (bcrypt cost 10 for "TestAdmin@2024"). For testing purposes.
+		`INSERT INTO admin_users (email, password_hash) VALUES (
+			'testadmin@gopher.lab',
+			'$2a$10$/FE1Ld392dix2Wi2JikJIOc.DG5xshjne.VZFe15ovLbdWuKOiAka'
+		) ON CONFLICT (email) DO NOTHING;`,
+
 		// === STUDENT LEARNING SYSTEM ===
 		`CREATE TABLE IF NOT EXISTS students (
 			id SERIAL PRIMARY KEY,
@@ -142,6 +148,19 @@ func MigratePostgres(ctx context.Context, db *sql.DB) error {
 		`CREATE INDEX IF NOT EXISTS idx_students_email ON students(email);`,
 		`CREATE INDEX IF NOT EXISTS idx_students_user_id ON students(user_id);`,
 		`CREATE INDEX IF NOT EXISTS idx_students_created ON students(created_at);`,
+
+		// Seed test student (bcrypt cost 10 for "TestStudent@2024"). For testing purposes.
+		`INSERT INTO students (first_name, last_name, email, phone, whatsapp_number, user_id, password_hash, goal, status) VALUES (
+			'Test',
+			'Student',
+			'teststudent@gopher.lab',
+			'+919876543210',
+			'+919876543210',
+			'teststudent',
+			'$2a$10$/FE1Ld392dix2Wi2JikJIOc.DG5xshjne.VZFe15ovLbdWuKOiAka',
+			'Learn Go and systems thinking',
+			'active'
+		) ON CONFLICT (email) DO NOTHING;`,
 
 		`CREATE TABLE IF NOT EXISTS payment_plans (
 			id SERIAL PRIMARY KEY,
