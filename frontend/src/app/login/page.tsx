@@ -12,9 +12,12 @@ interface LoginForm {
   password: string;
 }
 
+type LoginMode = 'student' | 'admin';
+
 export default function LoginPage() {
   const router = useRouter();
   const { isAuthenticated, login } = useStudent();
+  const [loginMode, setLoginMode] = useState<LoginMode>('student');
   const [form, setForm] = useState<LoginForm>({
     user_id_or_email: '',
     password: '',
@@ -39,30 +42,57 @@ export default function LoginPage() {
     setLoading(true);
 
     try {
-      if (!form.user_id_or_email.trim()) throw new Error('User ID or Email required');
+      if (!form.user_id_or_email.trim()) throw new Error('User ID/Email or Username required');
       if (!form.password) throw new Error('Password required');
 
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/students/login`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(form),
-      });
+      if (loginMode === 'student') {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/students/login`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            user_id_or_email: form.user_id_or_email,
+            password: form.password,
+          }),
+        });
 
-      if (!res.ok) {
+        if (!res.ok) {
+          const data = await res.json();
+          throw new Error(data.error || 'Login failed');
+        }
+
         const data = await res.json();
-        throw new Error(data.error || 'Login failed');
+        login(data.token, {
+          id: data.id,
+          email: data.email,
+          user_id: data.user_id,
+          first_name: data.first_name,
+          last_name: data.last_name || '',
+        });
+
+        router.push('/learning');
+      } else {
+        // Admin login
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/auth/login`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            username: form.user_id_or_email,
+            password: form.password,
+          }),
+        });
+
+        if (!res.ok) {
+          const data = await res.json();
+          throw new Error(data.error || 'Admin login failed');
+        }
+
+        const data = await res.json();
+        // Store admin token in localStorage
+        if (data.token) {
+          localStorage.setItem('adminToken', data.token);
+          router.push('/admin/dashboard');
+        }
       }
-
-      const data = await res.json();
-      login(data.token, {
-        id: data.id,
-        email: data.email,
-        user_id: data.user_id,
-        first_name: data.first_name,
-        last_name: data.last_name || '',
-      });
-
-      router.push('/learning');
     } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred');
     } finally {
@@ -76,8 +106,46 @@ export default function LoginPage() {
       <main className="page-shell py-16 sm:py-24">
         <div className="mx-auto max-w-md">
           <GlassCard className="border-brand-sunset/25 p-8 dark:border-brand-sunset/30">
-            <h1 className="text-3xl font-semibold text-slate-900 dark:text-slate-50">Welcome Back</h1>
-            <p className="mt-2 text-slate-600 dark:text-slate-400">Login to continue your Go learning journey</p>
+            {/* Login Mode Toggle */}
+            <div className="mb-8 flex gap-2 rounded-lg border border-slate-200 bg-slate-50 p-1 dark:border-slate-700 dark:bg-slate-900/50">
+              <button
+                onClick={() => {
+                  setLoginMode('student');
+                  setForm({ user_id_or_email: '', password: '' });
+                  setError(null);
+                }}
+                className={`flex-1 rounded py-2 px-4 text-sm font-medium transition ${
+                  loginMode === 'student'
+                    ? 'bg-white text-slate-900 shadow dark:bg-slate-800 dark:text-slate-50'
+                    : 'text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-200'
+                }`}
+              >
+                Student Login
+              </button>
+              <button
+                onClick={() => {
+                  setLoginMode('admin');
+                  setForm({ user_id_or_email: '', password: '' });
+                  setError(null);
+                }}
+                className={`flex-1 rounded py-2 px-4 text-sm font-medium transition ${
+                  loginMode === 'admin'
+                    ? 'bg-white text-slate-900 shadow dark:bg-slate-800 dark:text-slate-50'
+                    : 'text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-200'
+                }`}
+              >
+                Admin Login
+              </button>
+            </div>
+
+            <h1 className="text-3xl font-semibold text-slate-900 dark:text-slate-50">
+              {loginMode === 'student' ? 'Welcome Back' : 'Admin Portal'}
+            </h1>
+            <p className="mt-2 text-slate-600 dark:text-slate-400">
+              {loginMode === 'student'
+                ? 'Login to continue your Go learning journey'
+                : 'Access the admin dashboard'}
+            </p>
 
             {error && (
               <div className="mt-6 rounded-lg border border-red-500/30 bg-red-500/10 p-4 text-sm text-red-700 dark:text-red-200">
@@ -88,7 +156,7 @@ export default function LoginPage() {
             <form onSubmit={handleSubmit} className="mt-8 space-y-5">
               <div>
                 <label className="block text-sm font-medium text-slate-700 dark:text-slate-300">
-                  User ID or Email
+                  {loginMode === 'student' ? 'User ID or Email' : 'Email or Username'}
                 </label>
                 <input
                   type="text"
@@ -96,13 +164,19 @@ export default function LoginPage() {
                   value={form.user_id_or_email}
                   onChange={handleInputChange}
                   className="mt-2 w-full rounded-lg border border-slate-200 bg-white px-4 py-2.5 text-slate-900 placeholder:text-slate-500 focus:border-blue-500 focus:outline-none dark:border-slate-700 dark:bg-slate-900/50 dark:text-slate-50 dark:placeholder:text-slate-400"
-                  placeholder="john_doe or john@example.com"
+                  placeholder={
+                    loginMode === 'student'
+                      ? 'john_doe or john@example.com'
+                      : 'admin@gopher.lab'
+                  }
                   required
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-slate-700 dark:text-slate-300">Password</label>
+                <label className="block text-sm font-medium text-slate-700 dark:text-slate-300">
+                  Password
+                </label>
                 <input
                   type="password"
                   name="password"
@@ -119,15 +193,58 @@ export default function LoginPage() {
                 disabled={loading}
                 className="btn-accent w-full disabled:opacity-50"
               >
-                {loading ? 'Logging in...' : 'Login'}
+                {loading
+                  ? loginMode === 'student'
+                    ? 'Logging in...'
+                    : 'Admin login...'
+                  : loginMode === 'student'
+                    ? 'Login'
+                    : 'Admin Login'}
               </button>
             </form>
 
-            <div className="mt-6 text-center text-sm text-slate-600 dark:text-slate-400">
-              Don&apos;t have an account?{' '}
-              <Link href="/signup" className="font-medium text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300">
-                Sign up now
-              </Link>
+            {loginMode === 'student' && (
+              <div className="mt-6 text-center text-sm text-slate-600 dark:text-slate-400">
+                Don&apos;t have an account?{' '}
+                <Link
+                  href="/signup"
+                  className="font-medium text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300"
+                >
+                  Sign up now
+                </Link>
+              </div>
+            )}
+          </GlassCard>
+
+          {/* Test Credentials Section */}
+          <GlassCard className="mt-8 border-brand-sunset/25 p-6 dark:border-brand-sunset/30">
+            <h3 className="text-sm font-semibold text-slate-900 dark:text-slate-50">
+              🧪 Test Credentials
+            </h3>
+            <div className="mt-4 space-y-4">
+              <div>
+                <p className="text-xs font-medium text-slate-600 dark:text-slate-400">
+                  STUDENT ACCOUNT
+                </p>
+                <p className="mt-1 font-mono text-xs text-slate-700 dark:text-slate-300">
+                  User ID: <span className="font-semibold">teststudent</span>
+                </p>
+                <p className="font-mono text-xs text-slate-700 dark:text-slate-300">
+                  Password: <span className="font-semibold">TestStudent@2024</span>
+                </p>
+              </div>
+              <div className="border-t border-slate-200 dark:border-slate-700" />
+              <div>
+                <p className="text-xs font-medium text-slate-600 dark:text-slate-400">
+                  ADMIN ACCOUNT
+                </p>
+                <p className="mt-1 font-mono text-xs text-slate-700 dark:text-slate-300">
+                  Email: <span className="font-semibold">testadmin@gopher.lab</span>
+                </p>
+                <p className="font-mono text-xs text-slate-700 dark:text-slate-300">
+                  Password: <span className="font-semibold">TestAdmin@2024</span>
+                </p>
+              </div>
             </div>
           </GlassCard>
         </div>

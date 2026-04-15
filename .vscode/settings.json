@@ -1,0 +1,9 @@
+{
+    "chat.tools.terminal.autoApprove": {
+        "git config": true,
+        "/^node -e \"console\\.log\\(JSON\\.stringify\\(JSON\\.parse\\(require\\('fs'\\)\\.readFileSync\\('tsconfig\\.json', 'utf8'\\)\\), null, 2\\)\\)\"$/": {
+            "approve": true,
+            "matchCommandLine": true
+        }
+    }
+}
