@@ -281,7 +281,7 @@ export function DeveloperSalaryComparison() {
       </Section>
 
       {/* Caveats */}
-      <Section id="salary-caveats" eyebrow="REALITY CHECK" title="What these numbers don't tell you">
+      <Section id="salary-caveats" eyebrow="REALITY CHECK" title="What these numbers don&apos;t tell you">
         <div className="space-y-4">
           <GlassCard>
             <h3 className="text-base font-semibold text-slate-900 dark:text-slate-100">Not everyone gets to max</h3>

@@ -23,7 +23,7 @@ export default function WhyCustomDevelopmentPage() {
             Why Custom <span className="text-gradient">Development</span> Matters
           </h1>
           <p className="mt-6 max-w-2xl text-[1.0625rem] leading-relaxed text-slate-600 dark:text-slate-400 sm:text-lg">
-            You've seen Wix build sites in hours. You've wondered why backend platforms take 1-3 years. Here's the real difference — and why it matters for your career.
+            You&apos;ve seen Wix build sites in hours. You&apos;ve wondered why backend platforms take 1-3 years. Here&apos;s the real difference — and why it matters for your career.
           </p>
         </section>
 
@@ -412,7 +412,7 @@ export default function WhyCustomDevelopmentPage() {
               <div>
                 <p className="font-semibold text-slate-900 dark:text-slate-50">Months 6-9: Deep dives</p>
                 <p className="mt-1 text-sm text-slate-600 dark:text-slate-400">
-                  Scaling systems, debugging under load, security, distributed problems. Why Netflix doesn't crash on release day.
+                  Scaling systems, debugging under load, security, distributed problems. Why Netflix doesn&apos;t crash on release day.
                 </p>
               </div>
             </div>
@@ -424,14 +424,14 @@ export default function WhyCustomDevelopmentPage() {
               <div>
                 <p className="font-semibold text-slate-900 dark:text-slate-50">Months 9-12: Interview prep and offers</p>
                 <p className="mt-1 text-sm text-slate-600 dark:text-slate-400">
-                  System design, behavioral prep, negotiation. By now, you're placement-ready for ₹1.2Cr+ roles.
+                  System design, behavioral prep, negotiation. By now, you&apos;re placement-ready for ₹1.2Cr+ roles.
                 </p>
               </div>
             </div>
           </div>
 
           <p className="mt-8 text-sm leading-relaxed text-slate-600 dark:text-slate-400">
-            <strong className="text-slate-900 dark:text-slate-200">Why this matters:</strong> A 3-month course teaches you to build Hello World. Gopher Lab teaches you to build systems that scale to millions of users, handle failure gracefully, and compete at the highest level. That's why it takes longer — you're learning a different league entirely.
+            <strong className="text-slate-900 dark:text-slate-200">Why this matters:</strong> A 3-month course teaches you to build Hello World. Gopher Lab teaches you to build systems that scale to millions of users, handle failure gracefully, and compete at the highest level. That&apos;s why it takes longer — you&apos;re learning a different league entirely.
           </p>
         </section>
 
@@ -514,10 +514,10 @@ export default function WhyCustomDevelopmentPage() {
               That&apos;s why Gopher Lab exists. We teach you not how to build websites. We teach you how to think like a systems engineer, architect like a founder, and code like a professional.
             </p>
             <p className="mt-4 text-sm font-medium text-brand-sunset dark:text-brand-onDark">
-              So the real question isn't: "Should I learn backend development?"
+              So the real question isn&apos;t: &quot;Should I learn backend development?&quot;
             </p>
             <p className="mt-1 text-sm font-medium text-brand-sunset dark:text-brand-onDark">
-              The real question is: "What's the cost of not learning?"
+              The real question is: &quot;What&apos;s the cost of not learning?&quot;
             </p>
             <div className="mt-8 flex gap-3 sm:flex-row">
               <Link href="/eligibility" className="btn-accent px-8">

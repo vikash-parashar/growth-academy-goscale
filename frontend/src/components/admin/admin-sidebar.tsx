@@ -14,7 +14,7 @@ const nav = [
   { href: "/dashboard/proofs", label: "Proofs" },
   { href: "/dashboard/employees", label: "Employees" },
   { href: "/dashboard/notifications", label: "Notifications" },
-  { href: "/changelog", label: "What's new" },
+  { href: "/changelog", label: "What&apos;s new" },
 ] as const;
 
 export function AdminSidebar() {
