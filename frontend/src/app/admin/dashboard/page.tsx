@@ -103,51 +103,54 @@ export default function AdminDashboard() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-900 via-purple-900 to-slate-900">
+    <div className="min-h-screen bg-slate-50 dark:bg-slate-950">
       <SiteHeader />
       <div className="page-shell py-8">
-        <h1 className="text-4xl font-bold text-white mb-8">Admin Dashboard</h1>
+        <div className="mb-8">
+          <h1 className="text-4xl font-bold text-slate-900 dark:text-white">Admin Dashboard</h1>
+          <p className="mt-2 text-slate-600 dark:text-slate-400">Manage students, payments, and send notifications</p>
+        </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Students List */}
-          <div className="lg:col-span-1 bg-white/10 backdrop-blur-md rounded-xl border border-white/20 p-6">
-            <h2 className="text-2xl font-bold text-white mb-4">Students ({total})</h2>
+          <div className="lg:col-span-1 rounded-xl border border-slate-200 bg-white p-6 dark:border-slate-700 dark:bg-slate-900">
+            <h2 className="text-2xl font-bold text-slate-900 mb-4 dark:text-white">Students ({total})</h2>
             <div className="space-y-2">
               {loading ? (
-                <p className="text-gray-300">Loading...</p>
+                <p className="text-slate-600 dark:text-slate-400">Loading...</p>
               ) : students.length === 0 ? (
-                <p className="text-gray-300">No students found</p>
+                <p className="text-slate-600 dark:text-slate-400">No students found</p>
               ) : (
                 <>
                   {students.map((student) => (
                     <button
                       key={student.id}
                       onClick={() => loadStudentDetail(student.id)}
-                      className={`w-full text-left p-3 rounded-lg transition ${
+                      className={`w-full text-left rounded-lg border-l-4 p-3 transition ${
                         selectedStudent?.id === student.id
-                          ? 'bg-purple-600 text-white'
-                          : 'bg-slate-800/50 text-gray-300 hover:bg-slate-700/50'
+                          ? 'border-blue-600 bg-blue-50 text-slate-900 dark:bg-blue-900/20 dark:text-white'
+                          : 'border-slate-200 bg-slate-50 text-slate-700 hover:bg-slate-100 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-slate-700'
                       }`}
                     >
                       <div className="font-semibold">
                         {student.first_name} {student.last_name}
                       </div>
-                      <div className="text-sm">{student.email}</div>
+                      <div className="text-xs text-slate-600 dark:text-slate-400">{student.email}</div>
                     </button>
                   ))}
-                  <div className="flex gap-2 mt-4">
+                  <div className="flex gap-2 border-t border-slate-200 pt-4 dark:border-slate-700">
                     <button
                       onClick={() => setPage(Math.max(1, page - 1))}
                       disabled={page === 1}
-                      className="px-3 py-2 bg-slate-700 text-white rounded disabled:opacity-50"
+                      className="rounded px-3 py-2 bg-slate-200 text-slate-900 hover:bg-slate-300 disabled:opacity-50 dark:bg-slate-700 dark:text-white dark:hover:bg-slate-600"
                     >
-                      Prev
+                      ← Prev
                     </button>
-                    <span className="px-3 py-2 text-white">Page {page}</span>
+                    <span className="flex items-center px-3 py-2 text-slate-700 dark:text-slate-300">Page {page}</span>
                     <button
                       onClick={() => setPage(page + 1)}
                       disabled={students.length < 10}
-                      className="px-3 py-2 bg-slate-700 text-white rounded disabled:opacity-50"
+                      className="rounded px-3 py-2 bg-slate-200 text-slate-900 hover:bg-slate-300 disabled:opacity-50 dark:bg-slate-700 dark:text-white dark:hover:bg-slate-600"
                     >
                       Next
                     </button>
@@ -158,65 +161,65 @@ export default function AdminDashboard() {
           </div>
 
           {/* Student Details */}
-          <div className="lg:col-span-2 bg-white/10 backdrop-blur-md rounded-xl border border-white/20 p-6">
+          <div className="lg:col-span-2 rounded-xl border border-slate-200 bg-white p-6 dark:border-slate-700 dark:bg-slate-900">
             {selectedStudent ? (
               <div className="space-y-6">
                 <div>
-                  <h2 className="text-2xl font-bold text-white mb-4">
+                  <h2 className="mb-4 text-2xl font-bold text-slate-900 dark:text-white">
                     {selectedStudent.first_name} {selectedStudent.last_name}
                   </h2>
-                  <div className="grid grid-cols-2 gap-4 text-gray-300">
-                    <div>
-                      <label className="text-sm text-gray-400">Email</label>
-                      <p className="text-white">{selectedStudent.email}</p>
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="rounded-lg bg-slate-50 p-3 dark:bg-slate-800">
+                      <label className="text-sm font-medium text-slate-600 dark:text-slate-400">Email</label>
+                      <p className="mt-1 text-slate-900 dark:text-white">{selectedStudent.email}</p>
                     </div>
-                    <div>
-                      <label className="text-sm text-gray-400">Phone</label>
-                      <p className="text-white">{selectedStudent.phone}</p>
+                    <div className="rounded-lg bg-slate-50 p-3 dark:bg-slate-800">
+                      <label className="text-sm font-medium text-slate-600 dark:text-slate-400">Phone</label>
+                      <p className="mt-1 text-slate-900 dark:text-white">{selectedStudent.phone}</p>
                     </div>
-                    <div>
-                      <label className="text-sm text-gray-400">User ID</label>
-                      <p className="text-white">{selectedStudent.user_id}</p>
+                    <div className="rounded-lg bg-slate-50 p-3 dark:bg-slate-800">
+                      <label className="text-sm font-medium text-slate-600 dark:text-slate-400">User ID</label>
+                      <p className="mt-1 text-slate-900 dark:text-white">{selectedStudent.user_id}</p>
                     </div>
-                    <div>
-                      <label className="text-sm text-gray-400">Status</label>
-                      <p className="text-white">{selectedStudent.status}</p>
+                    <div className="rounded-lg bg-slate-50 p-3 dark:bg-slate-800">
+                      <label className="text-sm font-medium text-slate-600 dark:text-slate-400">Status</label>
+                      <p className="mt-1 text-slate-900 dark:text-white">{selectedStudent.status}</p>
                     </div>
-                    <div className="col-span-2">
-                      <label className="text-sm text-gray-400">Goal</label>
-                      <p className="text-white">{selectedStudent.goal}</p>
+                    <div className="col-span-2 rounded-lg bg-slate-50 p-3 dark:bg-slate-800">
+                      <label className="text-sm font-medium text-slate-600 dark:text-slate-400">Goal</label>
+                      <p className="mt-1 text-slate-900 dark:text-white">{selectedStudent.goal}</p>
                     </div>
-                    <div className="col-span-2">
-                      <label className="text-sm text-gray-400">Joined</label>
-                      <p className="text-white">{new Date(selectedStudent.created_at).toLocaleDateString()}</p>
+                    <div className="col-span-2 rounded-lg bg-slate-50 p-3 dark:bg-slate-800">
+                      <label className="text-sm font-medium text-slate-600 dark:text-slate-400">Joined</label>
+                      <p className="mt-1 text-slate-900 dark:text-white">{new Date(selectedStudent.created_at).toLocaleDateString()}</p>
                     </div>
                   </div>
                 </div>
 
                 {/* Payment Info */}
                 {selectedStudent.payment && (
-                  <div className="bg-slate-800/50 p-4 rounded-lg">
-                    <h3 className="text-xl font-bold text-white mb-3">Payment Information</h3>
-                    <div className="space-y-2 text-gray-300">
-                      <div className="flex justify-between">
-                        <span>Total Amount:</span>
-                        <span className="text-white font-semibold">₹{(selectedStudent.payment.total_amount_paise / 100).toFixed(2)}</span>
+                  <div className="rounded-lg border border-slate-200 bg-slate-50 p-4 dark:border-slate-700 dark:bg-slate-800">
+                    <h3 className="mb-4 text-xl font-bold text-slate-900 dark:text-white">Payment Information</h3>
+                    <div className="space-y-3">
+                      <div className="flex justify-between rounded bg-white p-2 dark:bg-slate-900">
+                        <span className="text-slate-700 dark:text-slate-300">Total Amount:</span>
+                        <span className="font-semibold text-slate-900 dark:text-white">₹{(selectedStudent.payment.total_amount_paise / 100).toFixed(2)}</span>
                       </div>
-                      <div className="flex justify-between">
-                        <span>Paid Amount:</span>
-                        <span className="text-green-400 font-semibold">₹{(selectedStudent.payment.paid_amount_paise / 100).toFixed(2)}</span>
+                      <div className="flex justify-between rounded bg-white p-2 dark:bg-slate-900">
+                        <span className="text-slate-700 dark:text-slate-300">Paid Amount:</span>
+                        <span className="font-semibold text-green-600 dark:text-green-400">₹{(selectedStudent.payment.paid_amount_paise / 100).toFixed(2)}</span>
                       </div>
-                      <div className="flex justify-between">
-                        <span>Pending:</span>
-                        <span className="text-red-400 font-semibold">₹{(selectedStudent.payment.pending_amount_paise / 100).toFixed(2)}</span>
+                      <div className="flex justify-between rounded bg-white p-2 dark:bg-slate-900">
+                        <span className="text-slate-700 dark:text-slate-300">Pending:</span>
+                        <span className="font-semibold text-red-600 dark:text-red-400">₹{(selectedStudent.payment.pending_amount_paise / 100).toFixed(2)}</span>
                       </div>
-                      <div className="flex justify-between">
-                        <span>Completion:</span>
-                        <span className="text-white font-semibold">{selectedStudent.payment.percentage_paid}%</span>
+                      <div className="flex justify-between rounded bg-white p-2 dark:bg-slate-900">
+                        <span className="text-slate-700 dark:text-slate-300">Completion:</span>
+                        <span className="font-semibold text-slate-900 dark:text-white">{selectedStudent.payment.percentage_paid}%</span>
                       </div>
-                      <div className="mt-3 bg-slate-700/50 h-2 rounded-full overflow-hidden">
+                      <div className="mt-4 overflow-hidden rounded-full bg-slate-300 dark:bg-slate-700">
                         <div
-                          className="h-full bg-gradient-to-r from-green-400 to-blue-500"
+                          className="h-2 bg-gradient-to-r from-green-500 to-blue-600"
                           style={{ width: `${selectedStudent.payment.percentage_paid}%` }}
                         />
                       </div>
@@ -225,13 +228,13 @@ export default function AdminDashboard() {
                 )}
 
                 {/* Notifications */}
-                <div className="bg-slate-800/50 p-4 rounded-lg">
-                  <h3 className="text-xl font-bold text-white mb-3">Send Notification</h3>
+                <div className="rounded-lg border border-slate-200 bg-slate-50 p-4 dark:border-slate-700 dark:bg-slate-800">
+                  <h3 className="mb-4 text-xl font-bold text-slate-900 dark:text-white">Send Notification</h3>
                   <div className="space-y-3">
                     <textarea
                       id="notification-message"
                       placeholder="Enter message..."
-                      className="w-full px-4 py-2 bg-slate-700 text-white rounded border border-slate-600 focus:border-purple-500 outline-none"
+                      className="w-full rounded border border-slate-300 bg-white px-4 py-2 text-slate-900 placeholder:text-slate-500 focus:border-blue-500 focus:outline-none dark:border-slate-600 dark:bg-slate-900 dark:text-white dark:placeholder:text-slate-400"
                       rows={3}
                     />
                     <div className="flex gap-2">
@@ -240,7 +243,7 @@ export default function AdminDashboard() {
                           const msg = (document.getElementById('notification-message') as HTMLTextAreaElement)?.value;
                           if (msg) sendNotification('email', msg);
                         }}
-                        className="flex-1 px-4 py-2 bg-purple-600 text-white rounded hover:bg-purple-700"
+                        className="flex-1 rounded bg-blue-600 px-4 py-2 font-medium text-white transition hover:bg-blue-700"
                       >
                         Send Email
                       </button>
@@ -249,7 +252,7 @@ export default function AdminDashboard() {
                           const msg = (document.getElementById('notification-message') as HTMLTextAreaElement)?.value;
                           if (msg) sendNotification('sms', msg);
                         }}
-                        className="flex-1 px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700"
+                        className="flex-1 rounded bg-green-600 px-4 py-2 font-medium text-white transition hover:bg-green-700"
                       >
                         Send SMS
                       </button>
@@ -258,8 +261,8 @@ export default function AdminDashboard() {
                 </div>
               </div>
             ) : (
-              <div className="h-full flex items-center justify-center">
-                <p className="text-gray-400 text-lg">Select a student to view details</p>
+              <div className="flex h-full items-center justify-center">
+                <p className="text-lg text-slate-500 dark:text-slate-400">Select a student to view details</p>
               </div>
             )}
           </div>
