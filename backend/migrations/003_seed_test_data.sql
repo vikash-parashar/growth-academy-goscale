@@ -14,7 +14,7 @@ INSERT INTO students (first_name, last_name, email, phone, whatsapp_number, user
 	'$2a$10$/FE1Ld392dix2Wi2JikJIOc.DG5xshjne.VZFe15ovLbdWuKOiAka',
 	'Learn Go and systems thinking',
 	'active'
-) ON CONFLICT (email) DO NOTHING;
+) ON CONFLICT (user_id) DO NOTHING;
 
 -- Insert test admin (bcrypt hash cost 10 for "TestAdmin@2024")
 INSERT INTO admin_users (email, password_hash) VALUES (
