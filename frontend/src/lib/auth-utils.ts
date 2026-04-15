@@ -71,6 +71,9 @@ export const PUBLIC_PAGES = new Set([
   '/',
   '/story',
   '/program',
+  '/career-comparison',
+  '/jobs',
+  '/book',
   '/login',
   '/signup',
   '/error',
@@ -85,16 +88,13 @@ export const PROTECTED_PAGES = new Set([
   '/learning',
   '/proof',
   '/pricing',
+  '/podcast',
   '/mock-test',
-  '/career-comparison',
-  '/jobs',
   '/dashboard',
   '/admin',
   '/admin/dashboard',
-  '/book',
   '/pay',
   '/connect',
-  '/proof/page',
 ]);
 
 /**

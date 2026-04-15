@@ -7,9 +7,11 @@ import { BrandTagline, BrandWordmark } from "@/components/brand-wordmark";
 import { HeaderAccountDrawer } from "@/components/header-account-drawer";
 import { LogoMark } from "@/components/logo-mark";
 import { useLanguage } from "@/contexts/language-context";
+import { useStudent } from "@/contexts/StudentContext";
 
 export function SiteHeader() {
   const { t } = useLanguage();
+  const { isAuthenticated } = useStudent();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
 
@@ -93,29 +95,12 @@ export function SiteHeader() {
               className="flex flex-wrap items-center justify-end gap-x-4 gap-y-2 text-[0.9375rem] font-medium sm:gap-x-5 lg:gap-x-6"
               aria-label="Primary"
             >
+              {/* Always visible */}
               <Link href="/story" className={navItemClass}>
                 {t.header.story}
               </Link>
               <Link href="/program" className={navItemClass}>
                 {t.header.program}
-              </Link>
-              <Link href="/content" className={navItemClass}>
-                {t.header.content}
-              </Link>
-              <Link href="/learning" className={navItemClass}>
-                {t.header.learning}
-              </Link>
-              <Link href="/podcast" className={navItemClass}>
-                {t.header.podcast}
-              </Link>
-              <Link href="/proof" className={navItemClass}>
-                {t.header.proof}
-              </Link>
-              <Link href="/pricing" className={navItemClass}>
-                {t.header.pricing}
-              </Link>
-              <Link href="/mock-test" className={navItemClass}>
-                {t.header.mockTest}
               </Link>
               <Link href="/career-comparison" className={navItemClass}>
                 {t.header.careers}
@@ -126,15 +111,33 @@ export function SiteHeader() {
               <Link href="/book" className={navItemClass}>
                 {t.header.bookConsult}
               </Link>
-              <Link href="/connect" className={navItemClass}>
-                {t.header.connect}
-              </Link>
-              <Link
-                href="/eligibility"
-                className="shrink-0 rounded-full border border-[#fec7b4]/55 bg-[#234c6a]/70 px-4 py-2 text-[#f4eee6] shadow-sm transition hover:border-[#fec7b4] hover:bg-[#456882]/45 hover:text-white"
-              >
-                {t.header.apply}
-              </Link>
+
+              {/* Only visible when authenticated */}
+              {isAuthenticated && (
+                <>
+                  <Link href="/content" className={navItemClass}>
+                    {t.header.content}
+                  </Link>
+                  <Link href="/learning" className={navItemClass}>
+                    {t.header.learning}
+                  </Link>
+                  <Link href="/podcast" className={navItemClass}>
+                    {t.header.podcast}
+                  </Link>
+                  <Link href="/proof" className={navItemClass}>
+                    {t.header.proof}
+                  </Link>
+                  <Link href="/pricing" className={navItemClass}>
+                    {t.header.pricing}
+                  </Link>
+                  <Link href="/mock-test" className={navItemClass}>
+                    {t.header.mockTest}
+                  </Link>
+                  <Link href="/connect" className={navItemClass}>
+                    {t.header.connect}
+                  </Link>
+                </>
+              )}
             </nav>
             <HeaderAccountDrawer />
           </div>
@@ -173,29 +176,12 @@ export function SiteHeader() {
                   </button>
                 </div>
                 <nav className="flex min-h-0 flex-1 flex-col gap-0.5 overflow-y-auto bg-slate-50 p-3 dark:bg-slate-950" aria-label="Primary">
+                  {/* Always visible */}
                   <MobileNavLink href="/story" onNavigate={close}>
                     {t.header.story}
                   </MobileNavLink>
                   <MobileNavLink href="/program" onNavigate={close}>
                     {t.header.program}
-                  </MobileNavLink>
-                  <MobileNavLink href="/content" onNavigate={close}>
-                    {t.header.content}
-                  </MobileNavLink>
-                  <MobileNavLink href="/learning" onNavigate={close}>
-                    {t.header.learning}
-                  </MobileNavLink>
-                  <MobileNavLink href="/podcast" onNavigate={close}>
-                    {t.header.podcast}
-                  </MobileNavLink>
-                  <MobileNavLink href="/proof" onNavigate={close}>
-                    {t.header.proof}
-                  </MobileNavLink>
-                  <MobileNavLink href="/pricing" onNavigate={close}>
-                    {t.header.pricing}
-                  </MobileNavLink>
-                  <MobileNavLink href="/mock-test" onNavigate={close}>
-                    {t.header.mockTest}
                   </MobileNavLink>
                   <MobileNavLink href="/career-comparison" onNavigate={close}>
                     {t.header.careers}
@@ -206,16 +192,34 @@ export function SiteHeader() {
                   <MobileNavLink href="/book" onNavigate={close}>
                     {t.header.bookConsult}
                   </MobileNavLink>
-                  <MobileNavLink href="/connect" onNavigate={close}>
-                    {t.header.connect}
-                  </MobileNavLink>
-                  <Link
-                    href="/eligibility"
-                    onClick={close}
-                    className="mt-3 rounded-xl bg-brand-sunset px-4 py-3 text-center text-sm font-semibold text-white shadow-md shadow-brand-md transition hover:bg-brand-hover dark:bg-brand-sunsetBright dark:hover:bg-brand-onDark"
-                  >
-                    {t.header.apply}
-                  </Link>
+
+                  {/* Only visible when authenticated */}
+                  {isAuthenticated && (
+                    <>
+                      <div className="my-2 border-t border-slate-200 dark:border-slate-800" />
+                      <MobileNavLink href="/content" onNavigate={close}>
+                        {t.header.content}
+                      </MobileNavLink>
+                      <MobileNavLink href="/learning" onNavigate={close}>
+                        {t.header.learning}
+                      </MobileNavLink>
+                      <MobileNavLink href="/podcast" onNavigate={close}>
+                        {t.header.podcast}
+                      </MobileNavLink>
+                      <MobileNavLink href="/proof" onNavigate={close}>
+                        {t.header.proof}
+                      </MobileNavLink>
+                      <MobileNavLink href="/pricing" onNavigate={close}>
+                        {t.header.pricing}
+                      </MobileNavLink>
+                      <MobileNavLink href="/mock-test" onNavigate={close}>
+                        {t.header.mockTest}
+                      </MobileNavLink>
+                      <MobileNavLink href="/connect" onNavigate={close}>
+                        {t.header.connect}
+                      </MobileNavLink>
+                    </>
+                  )}
                 </nav>
               </aside>
             </>,
