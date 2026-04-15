@@ -45,33 +45,50 @@ export default function AdminDashboard() {
   // First useEffect: Check authentication
   useEffect(() => {
     const storedAdminToken = typeof window !== 'undefined' ? localStorage.getItem('adminToken') : null;
+    console.log('Admin dashboard - checking auth. adminToken:', storedAdminToken ? 'exists' : 'missing', 'isAuthenticated:', isAuthenticated);
+    
     setAdminToken(storedAdminToken);
     setAuthChecked(true);
     
     if (!storedAdminToken && !isAuthenticated) {
+      console.log('Admin dashboard - No token found, redirecting to login');
       router.push('/login');
+    } else {
+      console.log('Admin dashboard - Auth verified, ready to load students');
     }
   }, [isAuthenticated, router]);
 
   // Second useEffect: Load students (only after auth is checked)
   useEffect(() => {
-    if (!authChecked) return; // Wait for auth check to complete
+    if (!authChecked) {
+      console.log('Admin dashboard - Auth not yet checked, skipping student load');
+      return;
+    }
+    
+    console.log('Admin dashboard - Auth checked, proceeding to load students');
     
     const loadStudents = async () => {
       try {
         setLoading(true);
         const authToken = adminToken || token;
+        console.log('Admin dashboard - Loading students with token:', authToken ? 'exists' : 'missing');
+        
         if (!authToken) {
           console.error('No auth token available');
           return;
         }
+        
         const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/admin/students?page=${page}`, {
           headers: { Authorization: `Bearer ${authToken}` },
         });
+        
+        console.log('Admin dashboard - Load students response status:', res.status);
+        
         if (!res.ok) throw new Error('Failed to load students');
         const data = await res.json();
         setStudents(data.students || []);
         setTotal(data.total || 0);
+        console.log('Admin dashboard - Students loaded:', data.students?.length || 0);
       } catch (error) {
         console.error('Error loading students:', error);
       } finally {

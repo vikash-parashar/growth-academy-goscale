@@ -56,6 +56,7 @@ export default function LoginPage() {
       if (!form.password) throw new Error('Password required');
 
       if (loginMode === 'student') {
+        console.log('Starting student login with:', form.user_id_or_email);
         const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/students/login`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -65,12 +66,17 @@ export default function LoginPage() {
           }),
         });
 
+        console.log('Student login response status:', res.status, res.ok);
+
         if (!res.ok) {
           const data = await res.json();
+          console.error('Student login failed with status', res.status, data);
           throw new Error(data.error || 'Login failed');
         }
 
         const data = await res.json();
+        console.log('Student login response data:', data);
+        
         login(data.token, {
           id: data.id,
           email: data.email,
@@ -80,11 +86,14 @@ export default function LoginPage() {
         });
 
         showNotification(`Welcome back, ${data.first_name}! You are now in the Student Portal.`, 'success', 3000);
+        console.log('Redirecting to student learning...');
         setTimeout(() => {
-          router.push('/learning');
-        }, 1000);
+          console.log('Calling router.replace(/learning)');
+          router.replace('/learning');
+        }, 500);
       } else {
         // Admin login
+        console.log('Starting admin login with:', form.user_id_or_email);
         const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/auth/login`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -94,26 +103,39 @@ export default function LoginPage() {
           }),
         });
 
+        console.log('Admin login response status:', res.status, res.ok);
+        
         if (!res.ok) {
           const data = await res.json();
+          console.error('Admin login failed with status', res.status, data);
           throw new Error(data.error || 'Admin login failed');
         }
 
         const data = await res.json();
+        console.log('Admin login response data:', data);
+        
         // Store admin token in localStorage and clear student session
         if (data.token) {
+          console.log('Token received, storing in localStorage');
+          
           // Clear any existing student session
           localStorage.removeItem('studentToken');
           localStorage.removeItem('studentData');
           
           // Store admin token
           localStorage.setItem('adminToken', data.token);
+          console.log('Admin token stored in localStorage');
           
           showNotification('Successfully logged into Admin Portal!', 'success', 3000);
+          
+          // Use router.replace instead of push to avoid navigation stack issues
+          console.log('Redirecting to admin dashboard...');
           setTimeout(() => {
-            router.push('/admin/dashboard');
-          }, 1000);
+            console.log('Calling router.replace(/admin/dashboard)');
+            router.replace('/admin/dashboard');
+          }, 500); // Reduced timeout from 1000ms to 500ms
         } else {
+          console.error('No token in response:', data);
           throw new Error('No token received from server');
         }
       }
