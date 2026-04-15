@@ -32,34 +32,35 @@ export default function UsersPage() {
       router.push('/login');
       return;
     }
-    loadUsers();
-  }, [isAuthenticated, page]);
 
-  const loadUsers = async () => {
-    try {
-      setLoading(true);
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/admin/users?page=${page}&limit=10`,
-        {
-          headers: {
-            'Authorization': `Bearer ${token}`,
-          },
+    const loadUsers = async () => {
+      try {
+        setLoading(true);
+        const response = await fetch(
+          `${process.env.NEXT_PUBLIC_API_URL}/api/admin/users?page=${page}&limit=10`,
+          {
+            headers: {
+              'Authorization': `Bearer ${token}`,
+            },
+          }
+        );
+
+        if (!response.ok) {
+          throw new Error('Failed to load users');
         }
-      );
 
-      if (!response.ok) {
-        throw new Error('Failed to load users');
+        const data = await response.json();
+        setUsers(data.users || []);
+        setTotal(data.total || 0);
+      } catch (err) {
+        setError(err instanceof Error ? err.message : 'An error occurred');
+      } finally {
+        setLoading(false);
       }
+    };
 
-      const data = await response.json();
-      setUsers(data.users || []);
-      setTotal(data.total || 0);
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'An error occurred');
-    } finally {
-      setLoading(false);
-    }
-  };
+    loadUsers();
+  }, [isAuthenticated, page, router, token]);
 
   return (
     <div className="noise min-h-screen bg-background bg-hero-radial dark:bg-hero-radial-dark">

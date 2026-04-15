@@ -42,25 +42,26 @@ export default function AdminDashboard() {
       router.push('/login');
       return;
     }
-    loadStudents();
-  }, [isAuthenticated, page]);
 
-  const loadStudents = async () => {
-    try {
-      setLoading(true);
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/admin/students?page=${page}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      if (!res.ok) throw new Error('Failed to load students');
-      const data = await res.json();
-      setStudents(data.students || []);
-      setTotal(data.total || 0);
-    } catch (error) {
-      console.error('Error loading students:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
+    const loadStudents = async () => {
+      try {
+        setLoading(true);
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/admin/students?page=${page}`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        if (!res.ok) throw new Error('Failed to load students');
+        const data = await res.json();
+        setStudents(data.students || []);
+        setTotal(data.total || 0);
+      } catch (error) {
+        console.error('Error loading students:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadStudents();
+  }, [isAuthenticated, page, router, token]);
 
   const loadStudentDetail = async (studentId: number) => {
     try {

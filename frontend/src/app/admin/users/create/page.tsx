@@ -1,21 +1,12 @@
 'use client';
 
 import { useState } from 'react';
-import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { useStudent } from '@/contexts/StudentContext';
 import { SiteHeader } from '@/components/site-header';
 import { GlassCard } from '@/components/glass-card';
 
 type DeliveryMethod = 'email' | 'sms' | 'whatsapp';
-
-interface CreateUserRequest {
-  first_name: string;
-  last_name: string;
-  email: string;
-  phone: string;
-  delivery_method: DeliveryMethod;
-}
 
 interface CreateUserResponse {
   success: boolean;
@@ -26,7 +17,6 @@ interface CreateUserResponse {
 }
 
 export default function CreateUserPage() {
-  const router = useRouter();
   const { isAuthenticated, token } = useStudent();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
