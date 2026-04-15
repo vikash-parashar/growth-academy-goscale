@@ -1,0 +1,344 @@
+{
+  "info": {
+    "_postman_id": "a1b2c3d4-gopher-lab-api",
+    "name": "Gopher Lab API",
+    "description": "Local and deployed Gopher Lab (Growth Academy) backend. After **Auth → Login**, the `token` collection variable is set automatically for admin routes.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:8080" },
+    { "key": "token", "value": "" },
+    { "key": "leadId", "value": "1" },
+    { "key": "appointmentId", "value": "1" },
+    { "key": "employeeId", "value": "1" },
+    { "key": "proofId", "value": "1" }
+  ],
+  "item": [
+    {
+      "name": "Public",
+      "item": [
+        {
+          "name": "Health",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/health"
+          }
+        },
+        {
+          "name": "Announcements",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/public/announcements"
+          }
+        },
+        {
+          "name": "Consultation config",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/public/consultation/config"
+          }
+        },
+        {
+          "name": "Consultation availability",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/public/consultation/availability?days=14"
+          }
+        },
+        {
+          "name": "Consultation reserve (creates lead + Razorpay order)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Postman User\",\n  \"phone\": \"+91 9876543210\",\n  \"email\": \"postman.example@example.com\",\n  \"slot_utc\": \"2099-06-01T10:00:00Z\"\n}"
+            },
+            "url": "{{baseUrl}}/api/public/consultation/reserve"
+          },
+          "description": "Requires a valid open slot; adjust `slot_utc` to match `/availability`. Needs Razorpay keys on the server to succeed."
+        },
+        {
+          "name": "Proofs (public)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/proofs"
+          }
+        },
+        {
+          "name": "Create lead (application)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Applicant Name\",\n  \"phone\": \"+91 9876543210\",\n  \"email\": \"applicant@example.com\",\n  \"experience\": \"5 years backend\",\n  \"salary\": \"20 LPA\",\n  \"goal\": \"US-aligned remote offer\",\n  \"terms_accepted\": true\n}"
+            },
+            "url": "{{baseUrl}}/api/leads"
+          }
+        },
+        {
+          "name": "Create appointment",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"lead_id\": {{leadId}},\n  \"datetime\": \"2099-01-20T14:00:00Z\"\n}"
+            },
+            "url": "{{baseUrl}}/api/appointments"
+          }
+        },
+        {
+          "name": "Payments create order",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"lead_id\": {{leadId}},\n  \"amount_rupees\": \"100\"\n}"
+            },
+            "url": "{{baseUrl}}/api/payments/order"
+          },
+          "description": "Requires Razorpay `RAZORPAY_KEY_ID` and `RAZORPAY_KEY_SECRET`."
+        },
+        {
+          "name": "Payments verify",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"razorpay_order_id\": \"order_xxx\",\n  \"razorpay_payment_id\": \"pay_xxx\",\n  \"razorpay_signature\": \"sig_xxx\"\n}"
+            },
+            "url": "{{baseUrl}}/api/payments/verify"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Login (sets token)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 200) {",
+                  "    var j = pm.response.json();",
+                  "    if (j.token) pm.collectionVariables.set('token', j.token);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"gowithvikash@gmail.com\",\n  \"password\": \"Vikash@9966\"\n}"
+            },
+            "url": "{{baseUrl}}/api/auth/login"
+          },
+          "description": "DB user from seed, or legacy env `ADMIN_USERNAME` / `ADMIN_PASSWORD`. Password min length 8."
+        }
+      ]
+    },
+    {
+      "name": "Admin (Bearer token)",
+      "auth": {
+        "type": "bearer",
+        "bearer": [{ "key": "token", "value": "{{token}}", "type": "string" }]
+      },
+      "item": [
+        {
+          "name": "List leads",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/leads?status=&q="
+          }
+        },
+        {
+          "name": "Patch lead",
+          "request": {
+            "method": "PATCH",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"contacted\",\n  \"notes\": \"Called via Postman\"\n}"
+            },
+            "url": "{{baseUrl}}/api/leads/{{leadId}}"
+          }
+        },
+        {
+          "name": "List appointments",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/admin/appointments"
+          }
+        },
+        {
+          "name": "Patch appointment",
+          "request": {
+            "method": "PATCH",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"accepted\"\n}"
+            },
+            "url": "{{baseUrl}}/api/admin/appointments/{{appointmentId}}"
+          }
+        },
+        {
+          "name": "List proofs (admin)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/admin/proofs"
+          }
+        },
+        {
+          "name": "Upload proof (multipart)",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                { "key": "type", "value": "payslip", "type": "text" },
+                { "key": "file", "type": "file", "src": "" },
+                { "key": "preview", "type": "file", "src": "", "disabled": true }
+              ]
+            },
+            "url": "{{baseUrl}}/api/admin/proofs"
+          },
+          "description": "Attach a file for `file`. Optional `preview` image."
+        },
+        {
+          "name": "Unlock proof",
+          "request": {
+            "method": "PATCH",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"unlocked\": true\n}"
+            },
+            "url": "{{baseUrl}}/api/admin/proofs/{{proofId}}/unlock"
+          }
+        },
+        {
+          "name": "List payments",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/admin/payments"
+          }
+        },
+        {
+          "name": "List employees",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/admin/employees"
+          }
+        },
+        {
+          "name": "Create employee",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Jane Doe\",\n  \"email\": \"jane@example.com\",\n  \"phone\": \"+91 9999999999\",\n  \"role_title\": \"Engineer\",\n  \"department\": \"Engineering\",\n  \"experience\": \"3 years\",\n  \"monthly_salary_paise\": 5000000,\n  \"incentives_notes\": \"\",\n  \"start_date\": \"2026-01-01\",\n  \"status\": \"active\"\n}"
+            },
+            "url": "{{baseUrl}}/api/admin/employees"
+          }
+        },
+        {
+          "name": "Get employee",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/admin/employees/{{employeeId}}"
+          }
+        },
+        {
+          "name": "Patch employee",
+          "request": {
+            "method": "PATCH",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"role_title\": \"Senior Engineer\"\n}"
+            },
+            "url": "{{baseUrl}}/api/admin/employees/{{employeeId}}"
+          }
+        },
+        {
+          "name": "Upload employee resume (multipart)",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [{ "key": "file", "type": "file", "src": "" }]
+            },
+            "url": "{{baseUrl}}/api/admin/employees/{{employeeId}}/resume"
+          }
+        },
+        {
+          "name": "List employee salary payments",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/admin/employees/{{employeeId}}/payments"
+          }
+        },
+        {
+          "name": "Record salary payment",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"period_month\": \"2026-03-01\",\n  \"amount_paise\": 5000000,\n  \"incentive_paise\": 0,\n  \"notes\": \"March salary\"\n}"
+            },
+            "url": "{{baseUrl}}/api/admin/employees/{{employeeId}}/payments"
+          }
+        },
+        {
+          "name": "Broadcast notifications",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"subject\": \"Update from Gopher Lab\",\n  \"message\": \"Hello — quick update from the team.\",\n  \"channels\": [\"email\"],\n  \"audience\": \"all\"\n}"
+            },
+            "url": "{{baseUrl}}/api/admin/notifications/broadcast"
+          },
+          "description": "Channels: `email`, `sms`, `whatsapp`. Audience: `all`, `new`, `contacted`, `converted`, `rejected`."
+        },
+        {
+          "name": "Legacy GET /appointments",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/appointments"
+          }
+        }
+      ]
+    }
+  ]
+}

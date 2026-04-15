@@ -1,0 +1,41 @@
+# Runs on backend changes: fmt check (via vet), compile, Docker image build.
+name: Backend CI
+on:
+  push:
+    branches: [main]
+    paths:
+      - "backend/**"
+      - ".github/workflows/backend-ci.yml"
+  pull_request:
+    branches: [main]
+    paths:
+      - "backend/**"
+      - ".github/workflows/backend-ci.yml"
+  workflow_dispatch: {}
+
+concurrency:
+  group: backend-ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  go:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: backend
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-go@v5
+        with:
+          go-version: "1.22"
+          cache-dependency-path: backend/go.sum
+
+      - name: Module verify & vet
+        run: go mod verify && go vet ./...
+
+      - name: Build binary
+        run: CGO_ENABLED=0 go build -ldflags="-s -w" -o /tmp/goscale-server ./cmd/server
+
+      - name: Docker build
+        run: docker build -t goscale-api:ci .

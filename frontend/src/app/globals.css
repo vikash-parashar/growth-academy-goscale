@@ -1,0 +1,260 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* —— Day: FFF3C7 · FEC7B4 · FC819E · FF8E8F · FA7070 —— */
+:root {
+  --background: #fff3c7;
+  --foreground: #1b3c53;
+  --muted: #456882;
+  --label: #fa7070;
+  --card: rgba(255, 252, 248, 0.88);
+  --border: rgba(252, 129, 158, 0.32);
+  --ring-accent: rgba(250, 112, 112, 0.5);
+  --section-eyebrow-bg: #fec7b4;
+  --section-eyebrow-fg: #5c1f28;
+  --section-eyebrow-border: rgba(250, 112, 112, 0.38);
+  --btn-gradient: linear-gradient(165deg, #fc819e 0%, #fa7070 48%, #ff8e8f 100%);
+  --btn-gradient-hover: linear-gradient(165deg, #ff8e8f 0%, #fc819e 45%, #fa7070 100%);
+  --btn-fg: #ffffff;
+  --btn-border: rgba(250, 112, 112, 0.45);
+}
+
+/* —— Dark: 1B3C53 · 234C6A · 456882 · D2C1B6 (main + admin) —— */
+.dark {
+  --background: #1b3c53;
+  --foreground: #d2c1b6;
+  --muted: #9eb4c4;
+  --label: #fec7b4;
+  --card: rgba(35, 76, 106, 0.82);
+  --border: rgba(69, 104, 130, 0.45);
+  --ring-accent: rgba(210, 193, 182, 0.45);
+  --section-eyebrow-bg: rgba(35, 76, 106, 0.92);
+  --section-eyebrow-fg: #d2c1b6;
+  --section-eyebrow-border: rgba(69, 104, 130, 0.65);
+  --btn-gradient: linear-gradient(165deg, #456882 0%, #234c6a 52%, #3a5f78 100%);
+  --btn-gradient-hover: linear-gradient(165deg, #527896 0%, #2d5674 50%, #456882 100%);
+  --btn-fg: #fff3c7;
+  --btn-border: rgba(210, 193, 182, 0.35);
+}
+
+body {
+  color: var(--foreground);
+  background-color: var(--background);
+  font-family: var(--font-sans), system-ui, sans-serif;
+  font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+  font-size: 1rem;
+  line-height: 1.65;
+  letter-spacing: 0.01em;
+}
+
+@media (min-width: 640px) {
+  body {
+    font-size: 1.0625rem;
+    line-height: 1.65;
+  }
+}
+
+:focus-visible {
+  outline: 2px solid rgb(250 112 112 / 0.55);
+  outline-offset: 2px;
+}
+
+.dark :focus-visible {
+  outline-color: rgb(210 193 182 / 0.55);
+}
+
+@layer base {
+  h1,
+  h2,
+  h3,
+  h4 {
+    color: var(--foreground);
+  }
+}
+
+@layer components {
+  .page-shell {
+    @apply mx-auto w-[95%] max-w-none px-4 sm:px-6;
+  }
+
+  .section-eyebrow {
+    @apply mb-2 inline-block max-w-full rounded-lg px-3 py-1.5 text-center font-mono text-[0.65rem] font-semibold uppercase leading-snug tracking-[0.22em] sm:text-xs;
+    background-color: var(--section-eyebrow-bg);
+    color: var(--section-eyebrow-fg);
+    border: 1px solid var(--section-eyebrow-border);
+  }
+
+  .section-eyebrow-pill {
+    @apply inline-flex max-w-full items-center rounded-full border px-2.5 py-0.5 text-center font-mono text-[0.62rem] font-bold uppercase tracking-[0.12em];
+    background-color: var(--section-eyebrow-bg);
+    color: var(--section-eyebrow-fg);
+    border-color: var(--section-eyebrow-border);
+  }
+
+  .btn-accent {
+    @apply inline-flex items-center justify-center rounded-full px-8 py-3.5 text-center text-sm font-semibold shadow-md transition active:scale-[0.99];
+    background-image: var(--btn-gradient);
+    color: var(--btn-fg);
+    border: 1px solid var(--btn-border);
+    box-shadow: 0 6px 20px -6px rgba(252, 129, 158, 0.35);
+  }
+
+  .btn-accent:hover {
+    background-image: var(--btn-gradient-hover);
+    filter: brightness(1.03);
+  }
+
+  .dark .btn-accent {
+    box-shadow: 0 6px 22px -6px rgba(0, 0, 0, 0.35);
+  }
+
+  .btn-accent-sm {
+    @apply inline-flex items-center justify-center rounded-full px-4 py-2 text-sm font-semibold shadow-sm transition active:scale-[0.99];
+    background-image: var(--btn-gradient);
+    color: var(--btn-fg);
+    border: 1px solid var(--btn-border);
+    box-shadow: 0 4px 14px -4px rgba(252, 129, 158, 0.28);
+  }
+
+  .btn-accent-sm:hover {
+    background-image: var(--btn-gradient-hover);
+    filter: brightness(1.03);
+  }
+
+  .dark .btn-accent-sm {
+    box-shadow: 0 4px 14px -4px rgba(0, 0, 0, 0.3);
+  }
+
+  .btn-secondary {
+    @apply inline-flex items-center justify-center rounded-full border px-8 py-3.5 text-sm font-semibold shadow-sm transition hover:shadow-md;
+    border-color: rgba(252, 129, 158, 0.4);
+    background-color: rgba(255, 255, 255, 0.72);
+    color: var(--foreground);
+  }
+
+  .btn-secondary:hover {
+    border-color: rgba(250, 112, 112, 0.55);
+    background-color: rgba(255, 255, 255, 0.92);
+  }
+
+  .dark .btn-secondary {
+    border-color: rgba(210, 193, 182, 0.28);
+    background-color: rgba(35, 76, 106, 0.55);
+    color: #d2c1b6;
+  }
+
+  .dark .btn-secondary:hover {
+    border-color: rgba(210, 193, 182, 0.42);
+    background-color: rgba(69, 104, 130, 0.4);
+  }
+
+  .text-eyebrow {
+    @apply text-xs font-semibold uppercase tracking-[0.22em];
+    color: var(--label);
+  }
+
+  .admin-surface {
+    @apply rounded-xl border backdrop-blur-sm shadow-sm dark:border-[#456882]/35;
+    border-color: rgba(252, 129, 158, 0.18);
+    background-color: rgba(255, 252, 248, 0.82);
+  }
+
+  .dark .admin-surface {
+    background-color: rgba(35, 76, 108, 0.42);
+  }
+
+  /* Third-party brand colors (official-style CTAs) */
+  .btn-social-whatsapp {
+    @apply inline-flex items-center justify-center rounded-full px-8 py-3.5 text-center text-sm font-semibold text-white shadow-md transition active:scale-[0.99];
+    background-color: #25d366;
+    box-shadow: 0 4px 18px -4px rgba(37, 211, 102, 0.45);
+  }
+
+  .btn-social-whatsapp:hover {
+    filter: brightness(1.07);
+  }
+
+  .btn-social-linkedin {
+    @apply inline-flex items-center justify-center rounded-full px-5 py-2.5 text-sm font-semibold text-white shadow-md transition active:scale-[0.99];
+    background-color: #0a66c2;
+    box-shadow: 0 4px 14px -4px rgba(10, 102, 194, 0.4);
+  }
+
+  .btn-social-linkedin:hover {
+    filter: brightness(1.08);
+  }
+
+  .btn-social-youtube {
+    @apply inline-flex items-center justify-center rounded-full px-5 py-2.5 text-sm font-semibold text-white shadow-md transition active:scale-[0.99];
+    background-color: #ff0000;
+    box-shadow: 0 4px 14px -4px rgba(255, 0, 0, 0.35);
+  }
+
+  .btn-social-youtube:hover {
+    filter: brightness(1.06);
+  }
+
+  .btn-social-facebook {
+    @apply inline-flex items-center justify-center rounded-full px-5 py-2.5 text-sm font-semibold text-white shadow-md transition active:scale-[0.99];
+    background-color: #1877f2;
+    box-shadow: 0 4px 14px -4px rgba(24, 119, 242, 0.4);
+  }
+
+  .btn-social-facebook:hover {
+    filter: brightness(1.07);
+  }
+
+  .btn-social-instagram {
+    @apply inline-flex items-center justify-center rounded-full px-5 py-2.5 text-sm font-semibold text-white shadow-md transition active:scale-[0.99];
+    background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+    box-shadow: 0 4px 14px -4px rgba(220, 39, 67, 0.35);
+  }
+
+  .btn-social-instagram:hover {
+    filter: brightness(1.06);
+  }
+
+  /* Compact pills (footer / inline) */
+  .btn-social-pill-sm {
+    @apply px-3 py-1.5 text-xs;
+  }
+}
+
+@layer utilities {
+  .glass {
+    @apply rounded-2xl border shadow-soft backdrop-blur-md dark:border-[#456882]/30 dark:shadow-soft-dark;
+    border-color: rgba(252, 129, 158, 0.22);
+    background-color: rgba(255, 252, 248, 0.82);
+  }
+
+  .dark .glass {
+    background-color: rgba(35, 76, 106, 0.52);
+  }
+
+  .glass-hover {
+    @apply transition dark:hover:border-[#d2c1b6]/25 dark:hover:bg-[#234c6a]/55 dark:hover:shadow-[0_16px_48px_-12px_rgba(0,0,0,0.45)];
+  }
+
+  .glass-hover:hover {
+    border-color: rgba(252, 129, 158, 0.35);
+    background-color: rgba(255, 255, 255, 0.92);
+    box-shadow: 0 12px 40px -12px rgba(252, 129, 158, 0.14);
+  }
+
+  .text-gradient {
+    @apply bg-clip-text text-transparent;
+    background-image: linear-gradient(90deg, #fa7070 0%, #fc819e 45%, #ff8e8f 100%);
+  }
+
+  .dark .text-gradient {
+    background-image: linear-gradient(90deg, #d2c1b6 0%, #fec7b4 48%, #fff3c7 100%);
+  }
+
+  .noise {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120' viewBox='0 0 120 120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)' opacity='0.024'/%3E%3C/svg%3E");
+  }
+  .dark .noise {
+    opacity: 0.85;
+  }
+}

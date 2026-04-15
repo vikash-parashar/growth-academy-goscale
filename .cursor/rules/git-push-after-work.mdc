@@ -1,0 +1,16 @@
+---
+description: After any code changes, commit and push to GitHub — every time
+alwaysApply: true
+---
+
+# Commit and push after every change
+
+Whenever you modify project code (features, fixes, refactors, copy, config that belongs in the repo):
+
+1. Run `git status` in the repo root and stage only relevant files (never commit secrets, `.env`, `.env.local`, or unrelated local files).
+2. Commit with a clear message describing what changed.
+3. Push to GitHub: `git push origin <current-branch>` (usually `main`).
+
+Do not finish a coding task without pushing, unless `git push` fails — then report the error and confirm what was committed locally.
+
+If push fails (auth, network), report the error and what was committed locally. Do not assume deployment (e.g. Vercel) ran unless the user confirms it.

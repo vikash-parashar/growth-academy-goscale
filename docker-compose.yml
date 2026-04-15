@@ -1,0 +1,22 @@
+# Local Postgres for Gopher Lab API. From repo root:
+#   docker compose up -d
+# Default URL matches backend/config default DATABASE_URL in .env.example (database: gopher_lab).
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: goscale
+      POSTGRES_PASSWORD: goscale
+      POSTGRES_DB: gopher_lab
+    ports:
+      - "5432:5432"
+    volumes:
+      - gopherlab_pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U goscale -d gopher_lab"]
+      interval: 3s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  gopherlab_pgdata:

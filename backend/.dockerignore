@@ -1,0 +1,6 @@
+uploads/
+.git
+*.db
+.env
+.env.*
+README.md

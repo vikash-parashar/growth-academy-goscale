@@ -1,0 +1,45 @@
+Gopher Lab — deploy backend (API) + connect Vercel frontend
+
+Repo: https://github.com/vikash-parashar/growth-academy-goscale
+
+=== FRONTEND (Vercel) — you already did this ===
+- Project root: frontend
+- Env: NEXT_PUBLIC_API_URL = https://YOUR_API.onrender.com (no trailing slash)
+- After backend URL exists, set CORS on the API (below) and redeploy API if needed.
+
+=== BACKEND (Render) — do this next ===
+
+1) Database (Neon — free Postgres)
+   - https://console.neon.tech → New project → copy the connection string.
+   - Append ssl if needed: ?sslmode=require
+
+2) Admin password (bcrypt)
+   - In repo: cd backend && go run ./cmd/hashpassword 'YourLongSecretPassword'
+   - Copy the printed hash for ADMIN_PASSWORD.
+
+3) Render — Web Service from this repo
+   A) Blueprint (recommended)
+      - https://dashboard.render.com → New → Blueprint
+      - Connect GitHub repo: growth-academy-goscale
+      - Render reads render.yaml (Dockerfile: backend/Dockerfile)
+   B) Or: New → Web Service → same repo → Root: leave default, Dockerfile path: backend/Dockerfile, Docker context: backend
+
+4) Environment variables on Render (service → Environment)
+   - GIN_MODE = release
+   - DATABASE_URL = (paste Neon URL)
+   - JWT_SECRET = (Render can generate, or paste openssl rand -base64 32)
+   - ADMIN_USERNAME = admin
+   - ADMIN_PASSWORD = (bcrypt hash from step 2)
+   - CORS_ORIGINS = https://YOUR-PROJECT.vercel.app
+   - PUBLIC_BASE_URL = leave empty (uses RENDER_EXTERNAL_URL) OR https://goscale-api.onrender.com
+
+5) Deploy → copy HTTPS URL (e.g. https://goscale-api.onrender.com)
+
+6) Wire Vercel
+   - Vercel → Project → Settings → Environment Variables
+   - NEXT_PUBLIC_API_URL = your Render URL
+   - Redeploy frontend
+
+7) If CORS errors in browser: CORS_ORIGINS must exactly match your Vercel URL (https, no path). Redeploy API after changing.
+
+Free tier note: Render sleeps when idle; first request can be slow. File uploads use ephemeral disk on free tier.

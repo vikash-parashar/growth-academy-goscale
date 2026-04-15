@@ -1,0 +1,21 @@
+{
+  "name": "growth-academy-goscale",
+  "private": true,
+  "engines": {
+    "node": ">=18.18.0"
+  },
+  "workspaces": [
+    "frontend"
+  ],
+  "scripts": {
+    "build": "npm run build -w frontend",
+    "predev": "node scripts/ensure-env.cjs",
+    "dev": "concurrently -k -n backend,frontend -c blue,green \"npm run dev:backend\" \"npm run dev:frontend\"",
+    "dev:backend": "cd backend && go run ./cmd/server",
+    "dev:frontend": "npm run dev -w frontend -- -p 3005",
+    "lint": "npm run lint -w frontend"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.2"
+  }
+}
