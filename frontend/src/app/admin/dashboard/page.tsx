@@ -38,66 +38,77 @@ export default function AdminDashboard() {
   const [page, setPage] = useState(1);
   const [total, setTotal] = useState(0);
   const [adminToken, setAdminToken] = useState<string | null>(null);
-  const [authChecked, setAuthChecked] = useState(false);
+  const [isChecking, setIsChecking] = useState(true);
 
   useSessionTimeout(); // Enable 1-hour session timeout
 
-  // First useEffect: Check authentication
+  // First useEffect: Check authentication immediately but don't redirect
   useEffect(() => {
-    const storedAdminToken = typeof window !== 'undefined' ? localStorage.getItem('adminToken') : null;
-    console.log('Admin dashboard - checking auth. adminToken:', storedAdminToken ? 'exists' : 'missing', 'isAuthenticated:', isAuthenticated);
+    const checkAuth = () => {
+      const storedAdminToken = typeof window !== 'undefined' ? localStorage.getItem('adminToken') : null;
+      console.log('Admin dashboard - Auth check. adminToken:', storedAdminToken ? '✓ exists' : '✗ missing');
+      
+      setAdminToken(storedAdminToken);
+      setIsChecking(false);
+      
+      if (!storedAdminToken && !isAuthenticated) {
+        console.log('Admin dashboard - No token, redirecting to login');
+        // Add a small delay to ensure state updates before redirect
+        const timer = setTimeout(() => {
+          router.push('/login');
+        }, 100);
+        return () => clearTimeout(timer);
+      }
+    };
     
-    setAdminToken(storedAdminToken);
-    setAuthChecked(true);
-    
-    if (!storedAdminToken && !isAuthenticated) {
-      console.log('Admin dashboard - No token found, redirecting to login');
-      router.push('/login');
-    } else {
-      console.log('Admin dashboard - Auth verified, ready to load students');
-    }
+    checkAuth();
   }, [isAuthenticated, router]);
 
-  // Second useEffect: Load students (only after auth is checked)
+  // Second useEffect: Load students only after auth check is done and token exists
   useEffect(() => {
-    if (!authChecked) {
-      console.log('Admin dashboard - Auth not yet checked, skipping student load');
+    if (isChecking) {
+      console.log('Admin dashboard - Still checking auth, waiting...');
       return;
     }
     
-    console.log('Admin dashboard - Auth checked, proceeding to load students');
+    const authToken = adminToken || token;
+    if (!authToken) {
+      console.log('Admin dashboard - No auth token available, skipping load');
+      return;
+    }
+    
+    console.log('Admin dashboard - Auth verified, loading students...');
     
     const loadStudents = async () => {
       try {
         setLoading(true);
-        const authToken = adminToken || token;
-        console.log('Admin dashboard - Loading students with token:', authToken ? 'exists' : 'missing');
-        
-        if (!authToken) {
-          console.error('No auth token available');
-          return;
-        }
+        console.log('Admin dashboard - Fetching students from API...');
         
         const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/admin/students?page=${page}`, {
           headers: { Authorization: `Bearer ${authToken}` },
         });
         
-        console.log('Admin dashboard - Load students response status:', res.status);
+        console.log('Admin dashboard - Students response status:', res.status);
         
-        if (!res.ok) throw new Error('Failed to load students');
+        if (!res.ok) {
+          console.error('Failed to load students, status:', res.status);
+          throw new Error('Failed to load students');
+        }
+        
         const data = await res.json();
         setStudents(data.students || []);
         setTotal(data.total || 0);
-        console.log('Admin dashboard - Students loaded:', data.students?.length || 0);
+        console.log('Admin dashboard - ✓ Students loaded:', data.students?.length || 0);
       } catch (error) {
         console.error('Error loading students:', error);
+        setStudents([]);
       } finally {
         setLoading(false);
       }
     };
 
     loadStudents();
-  }, [authChecked, page, adminToken, token]);
+  }, [isChecking, page, adminToken, token]);
 
   const loadStudentDetail = async (studentId: number) => {
     try {
