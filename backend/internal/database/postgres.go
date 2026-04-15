@@ -121,13 +121,13 @@ func MigratePostgres(ctx context.Context, db *sql.DB) error {
 		// Seed default portal admin (bcrypt cost 10 for "Vikash@9966"). Idempotent.
 		`INSERT INTO admin_users (email, password_hash) VALUES (
 			'gowithvikash@gmail.com',
-			'$2a$10$FZbQRC6A8m6ys/6Qo2qQ2uNLn5ehAvV1XsQ8jWYTuaFCFRGtvlgSW'
+			E'$2a$10$FZbQRC6A8m6ys/6Qo2qQ2uNLn5ehAvV1XsQ8jWYTuaFCFRGtvlgSW'
 		) ON CONFLICT (email) DO NOTHING;`,
 
 		// Seed test admin (bcrypt cost 10 for "TestAdmin@2024"). For testing purposes.
 		`INSERT INTO admin_users (email, password_hash) VALUES (
 			'testadmin@gopher.lab',
-			'$2a$10$/FE1Ld392dix2Wi2JikJIOc.DG5xshjne.VZFe15ovLbdWuKOiAka'
+			E'$2a$10$/FE1Ld392dix2Wi2JikJIOc.DG5xshjne.VZFe15ovLbdWuKOiAka'
 		) ON CONFLICT (email) DO NOTHING;`,
 
 		// === STUDENT LEARNING SYSTEM ===
@@ -157,7 +157,7 @@ func MigratePostgres(ctx context.Context, db *sql.DB) error {
 			'+919876543210',
 			'+919876543210',
 			'teststudent',
-			'$2a$10$/FE1Ld392dix2Wi2JikJIOc.DG5xshjne.VZFe15ovLbdWuKOiAka',
+			E'$2a$10$/FE1Ld392dix2Wi2JikJIOc.DG5xshjne.VZFe15ovLbdWuKOiAka',
 			'Learn Go and systems thinking',
 			'active'
 		) ON CONFLICT (email) DO NOTHING;`,
