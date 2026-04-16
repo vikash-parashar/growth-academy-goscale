@@ -12,14 +12,14 @@ import (
 
 // GeneratorConfig holds configuration for certificate generation
 type GeneratorConfig struct {
-	InstituteName   string
-	InstituteTagline string
-	TeacherName     string
-	TeacherTitle    string
-	WebsiteName     string
+	InstituteName      string
+	InstituteTagline   string
+	TeacherName        string
+	TeacherTitle       string
+	WebsiteName        string
 	WebsiteDescription string
-	CourseName      string
-	CourseDuration  string
+	CourseName         string
+	CourseDuration     string
 }
 
 // CertificateGenerator generates certificates in various formats
@@ -113,7 +113,7 @@ func (cg *CertificateGenerator) GeneratePDF(cert *model.Certificate, studentName
 		pdf.SetY(115)
 		pdf.SetX(40)
 		pdf.CellFormat(200, 5, "Skills Acquired:", "", 1, "L", false, 0, "")
-		
+
 		pdf.SetFont("Arial", "", 9)
 		topicsStr := ""
 		for i, topic := range cert.TopicsLearned {
@@ -122,7 +122,7 @@ func (cg *CertificateGenerator) GeneratePDF(cert *model.Certificate, studentName
 			}
 			topicsStr += topic
 		}
-		
+
 		pdf.SetX(45)
 		pdf.MultiCell(200, 4, topicsStr, "", "L", false)
 	}
@@ -223,26 +223,26 @@ func (cg *CertificateGenerator) SavePDFToFile(cert *model.Certificate, studentNa
 
 // CertificateData represents data for preview
 type CertificateData struct {
-	StudentName    string     `json:"student_name"`
-	CourseName     string     `json:"course_name"`
-	Score          float64    `json:"score"`
-	ClassesAttended int        `json:"classes_attended"`
-	TotalClasses   int        `json:"total_classes"`
-	TopicsLearned  []string   `json:"topics_learned"`
-	CertificateNumber string   `json:"certificate_number"`
-	IssuedDate     time.Time  `json:"issued_date"`
+	StudentName       string    `json:"student_name"`
+	CourseName        string    `json:"course_name"`
+	Score             float64   `json:"score"`
+	ClassesAttended   int       `json:"classes_attended"`
+	TotalClasses      int       `json:"total_classes"`
+	TopicsLearned     []string  `json:"topics_learned"`
+	CertificateNumber string    `json:"certificate_number"`
+	IssuedDate        time.Time `json:"issued_date"`
 }
 
 // NewCertificateData creates preview data from certificate
 func NewCertificateData(cert *model.Certificate, studentName string) *CertificateData {
 	return &CertificateData{
-		StudentName:    studentName,
-		CourseName:     cert.Title,
-		Score:          cert.Score,
-		ClassesAttended: cert.ClassesAttended,
-		TotalClasses:   cert.TotalClasses,
-		TopicsLearned:  cert.TopicsLearned,
+		StudentName:       studentName,
+		CourseName:        cert.Title,
+		Score:             cert.Score,
+		ClassesAttended:   cert.ClassesAttended,
+		TotalClasses:      cert.TotalClasses,
+		TopicsLearned:     cert.TopicsLearned,
 		CertificateNumber: cert.CertificateNumber,
-		IssuedDate:     cert.IssuedDate,
+		IssuedDate:        cert.IssuedDate,
 	}
 }

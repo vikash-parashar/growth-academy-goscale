@@ -72,14 +72,14 @@ func main() {
 
 	// Initialize certificate generator with configuration
 	certGen := certificate.NewCertificateGenerator(certificate.GeneratorConfig{
-		InstituteName:       "Gopher Lab",
-		InstituteTagline:    "Professional Backend Development Training",
-		TeacherName:         "Your Name", // This should be configurable
-		TeacherTitle:        "Senior Backend Engineer",
-		WebsiteName:         "Gopher Lab",
+		InstituteName:      "Gopher Lab",
+		InstituteTagline:   "Professional Backend Development Training",
+		TeacherName:        "Your Name", // This should be configurable
+		TeacherTitle:       "Senior Backend Engineer",
+		WebsiteName:        "Gopher Lab",
 		WebsiteDescription: "Industry-leading online Backend Development Training Institute",
-		CourseName:          "Backend Developer Training",
-		CourseDuration:      "6 Months",
+		CourseName:         "Backend Developer Training",
+		CourseDuration:     "6 Months",
 	})
 
 	authH := handler.NewAuthHandler(cfg, adminRepo)
